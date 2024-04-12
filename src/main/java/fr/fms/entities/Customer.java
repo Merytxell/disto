@@ -16,13 +16,16 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class User  implements Serializable {
+public class Customer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String Name;
+    private Long id;
+    private String name;
     private String lastName;
+    private String address;
     private String email;
     private String phone;
-    
+
+
 
 }

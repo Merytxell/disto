@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Size;
 
@@ -31,6 +28,8 @@ public class Article implements Serializable {
     @DecimalMin("50")
     private double price;
 
+    @ManyToOne
+    private Category category;
 
     public Article(String description, double price) {
         this.description = description;
