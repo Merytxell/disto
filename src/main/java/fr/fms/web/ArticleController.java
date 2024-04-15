@@ -8,6 +8,7 @@ import fr.fms.entities.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,7 +31,7 @@ String articleString = "article";
     // @RequestMapping(value="/index", method=RequestMethod.GET)
     @GetMapping("/index")
     public String index(Model model, @RequestParam(name = "page", defaultValue = "0") int page,
-                        @RequestParam(name = "keyword", defaultValue = "") String kw) { //le model est fourni par spring, je peux l'utiliser comme ci
+                        @RequestParam(name = "keyword", defaultValue = "") String kw, @RequestParam(name = "category", defaultValue = "") String category) { //le model est fourni par spring, je peux l'utiliser comme ci
 
 
         // ! Affichage des articles (avec mot clé ou non "")
@@ -40,7 +41,12 @@ String articleString = "article";
         model.addAttribute("currentPage", page);
         model.addAttribute("keyword", kw);
 
-
+        // ! Affichage des articles par catégories
+        Page<Article> articlesByCategory = articleRepository.findByCategoryName(category, PageRequest.of(page, 5));
+        model.addAttribute("listArticle", articlesByCategory.getContent());
+        model.addAttribute("pages", new int[articlesByCategory.getTotalPages()]);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("keyword", kw);
 
         // ! Affichage de la liste des catégories
         List<Category> listCategories = categoryRepository.findAll();
