@@ -25,12 +25,12 @@ String articleString = "article";
 
     // ! Recherche par catégories
     @GetMapping("/index")
-    public String searchByCategory(Model model, @RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "category", defaultValue = "") String cat){
+    public String searchByCategory(Model model, @RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "category_id", defaultValue = "") String cat){
         Page<Article> articles = articleRepository.findByCategoryLike(cat, PageRequest.of(page,5));
         model.addAttribute("listArticles", articles.getContent());
         model.addAttribute("pages", new int[articles.getTotalPages()]);
         model.addAttribute("currentPage", page);
-        model.addAttribute("category", cat);
+        model.addAttribute("category_id", cat);
 
         return "articles";
     }
