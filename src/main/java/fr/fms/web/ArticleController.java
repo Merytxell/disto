@@ -22,6 +22,18 @@ String articleString = "article";
     public ArticleController(ArticleRepository articleRepository){
         this.articleRepository = articleRepository;
     }
+
+    // ! Recherche par catégories
+    @GetMapping("/index")
+    public String searchByCategory(Model model, @RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "category", defaultValue = "") String cat){
+        Page<Article> articles = articleRepository.findByCategoryLike(cat, PageRequest.of(page,5));
+        model.addAttribute("listArticles", articles.getContent());
+        model.addAttribute("pages", new int[articles.getTotalPages()]);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("category", cat);
+
+        return "articles";
+    }
     // @RequestMapping(value="/index", method=RequestMethod.GET)
     @GetMapping("/index")
     public String index(Model model, @RequestParam(name = "page", defaultValue = "0") int page,
