@@ -18,10 +18,12 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Pattern(regexp = "")
+    @Pattern(regexp = "^[A-Za-z0-9._-]+@[A-Za-z0-9._-]+\\.[a-z]{2,}$",
+            message = "Invalid email")
     private String email;
 
-    @Pattern(regexp = "")
+    @Pattern(regexp = "^((?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])).{6,}$",
+            message = "password must contains at least 1 uppercase, 1 lowercase, 1 special character and 1 digit")
     private String password;
 
     @ManyToMany
