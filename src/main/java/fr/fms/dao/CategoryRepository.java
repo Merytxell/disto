@@ -1,6 +1,5 @@
 package fr.fms.dao;
 
-import fr.fms.entities.Article;
 import fr.fms.entities.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 

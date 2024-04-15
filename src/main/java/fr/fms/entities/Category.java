@@ -11,9 +11,9 @@ import java.io.Serializable;
 import java.util.Collection;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Data //! génère déjà un constructor sans arg
+@NoArgsConstructor // ! techniquement pas besoin de celui-ci
+@AllArgsConstructor // ! JPA exige un constructor PUBLIC sans args
 @ToString
 
 public class Category  implements Serializable {

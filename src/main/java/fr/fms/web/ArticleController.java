@@ -1,8 +1,10 @@
 package fr.fms.web;
 import fr.fms.dao.ArticleRepository;
+import fr.fms.dao.CategoryRepository;
 import fr.fms.entities.Article;
 import fr.fms.entities.ArticleDTO;
 import fr.fms.entities.ArticleToUpdateDTO;
+import fr.fms.entities.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,29 +13,20 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class ArticleController {
 String articleString = "article";
     private final ArticleRepository articleRepository;
-
+    private final CategoryRepository categoryRepository;
     @Autowired
-    public ArticleController(ArticleRepository articleRepository){
+    public ArticleController(ArticleRepository articleRepository, CategoryRepository categoryRepository){
         this.articleRepository = articleRepository;
+        this.categoryRepository = categoryRepository;
     }
 
-    // ! Recherche par catégories
-    @GetMapping("/search")
-    public String searchByCategory(Model model, @RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "category_id", defaultValue = "") String cat){
-        Page<Article> articles = articleRepository.findByCategoryLike(cat, PageRequest.of(page,5));
-        model.addAttribute("listArticles", articles.getContent());
-        model.addAttribute("pages", new int[articles.getTotalPages()]);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("category_id", cat);
-
-        return "articles";
-    }
     // @RequestMapping(value="/index", method=RequestMethod.GET)
     @GetMapping("/index")
     public String index(Model model, @RequestParam(name = "page", defaultValue = "0") int page,
@@ -41,13 +34,13 @@ String articleString = "article";
 
         Page<Article> articles = articleRepository.findByDescriptionContains(kw, PageRequest.of(page, 5));
         model.addAttribute("listArticle", articles.getContent());
-
         model.addAttribute("pages", new int[articles.getTotalPages()]);
-
         model.addAttribute("currentPage", page);
-
         model.addAttribute("keyword", kw);
 
+        List<Category> listCategories = categoryRepository.findAll();
+        System.out.println(listCategories);
+        model.addAttribute("categories", listCategories);
         // return articles.html
         return "articles"; //cette méthode retourne au dispatcherServerlet une vue
     }
