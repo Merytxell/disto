@@ -9,7 +9,7 @@ import fr.fms.entities.*;
 public interface ArticleRepository extends JpaRepository<Article, Long>{
 
 Page<Article> findByDescriptionContains(String description, Pageable pageable);
-Page<Article> findByCategoryLike(String category, Pageable pageable);
+Page<Article> findByCategoryName(String category, Pageable pageable);
 
 void deleteById(Long id);
 }

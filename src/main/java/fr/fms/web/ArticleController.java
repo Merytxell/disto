@@ -32,12 +32,17 @@ String articleString = "article";
     public String index(Model model, @RequestParam(name = "page", defaultValue = "0") int page,
                         @RequestParam(name = "keyword", defaultValue = "") String kw) { //le model est fourni par spring, je peux l'utiliser comme ci
 
+
+        // ! Affichage des articles (avec mot clé ou non "")
         Page<Article> articles = articleRepository.findByDescriptionContains(kw, PageRequest.of(page, 5));
         model.addAttribute("listArticle", articles.getContent());
         model.addAttribute("pages", new int[articles.getTotalPages()]);
         model.addAttribute("currentPage", page);
         model.addAttribute("keyword", kw);
 
+
+
+        // ! Affichage de la liste des catégories
         List<Category> listCategories = categoryRepository.findAll();
         System.out.println(listCategories);
         model.addAttribute("categories", listCategories);
