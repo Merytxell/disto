@@ -31,28 +31,34 @@ String articleString = "article";
     // @RequestMapping(value="/index", method=RequestMethod.GET)
     @GetMapping("/index")
     public String index(Model model, @RequestParam(name = "page", defaultValue = "0") int page,
-                        @RequestParam(name = "keyword", defaultValue = "") String kw, @RequestParam(name = "category", defaultValue = "") String category) { //le model est fourni par spring, je peux l'utiliser comme ci
+                        @RequestParam(name = "keyword", defaultValue = "") String kw,
+                        @RequestParam(name = "category", defaultValue = "") String category) {
+        //le model est fourni par spring, je peux l'utiliser comme ci
+if (!kw.isEmpty()) {
 
+    // ! Affichage des articles (avec mot clé ou non "")
+    Page<Article> articles = articleRepository.findByDescriptionContains(kw, PageRequest.of(page, 5));
+    model.addAttribute("listArticle", articles.getContent());
+    model.addAttribute("pages", new int[articles.getTotalPages()]);
+    model.addAttribute("currentPage", page);
+    model.addAttribute("keyword", kw);
+} else if (!category.isEmpty()){
+//        // ! Affichage des articles par catégories
+            Page<Article> articlesByCategory = articleRepository.findByCategoryName(category, PageRequest.of(page, 5));
+            model.addAttribute("listArticle", articlesByCategory.getContent());
+            model.addAttribute("pages", new int[articlesByCategory.getTotalPages()]);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("category", category);
+        } else {
 
-        // ! Affichage des articles (avec mot clé ou non "")
-        Page<Article> articles = articleRepository.findByDescriptionContains(kw, PageRequest.of(page, 5));
-        model.addAttribute("listArticle", articles.getContent());
-        model.addAttribute("pages", new int[articles.getTotalPages()]);
+        Page<Article> allArticles = articleRepository.findAll(PageRequest.of(page,5));
+        model.addAttribute("listArticle", allArticles.getContent());
+        model.addAttribute("pages", new int[allArticles.getTotalPages()]);
         model.addAttribute("currentPage", page);
-        model.addAttribute("keyword", kw);
-
-        // ! Affichage des articles par catégories
-        Page<Article> articlesByCategory = articleRepository.findByCategoryName(category, PageRequest.of(page, 5));
-        model.addAttribute("listArticle", articlesByCategory.getContent());
-        model.addAttribute("pages", new int[articlesByCategory.getTotalPages()]);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("keyword", kw);
-
+}
         // ! Affichage de la liste des catégories
         List<Category> listCategories = categoryRepository.findAll();
-        System.out.println(listCategories);
         model.addAttribute("categories", listCategories);
-        // return articles.html
         return "articles"; //cette méthode retourne au dispatcherServerlet une vue
     }
 

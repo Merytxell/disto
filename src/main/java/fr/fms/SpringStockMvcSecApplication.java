@@ -9,12 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @SpringBootApplication
-public class SpringStockMvcSecApplication implements CommandLineRunner {
+public class SpringStockMvcSecApplication implements CommandLineRunner{
 
     private static final Logger logger = LoggerFactory.getLogger(SpringStockMvcSecApplication.class);
-
 
     private final ArticleRepository articleRepository;
     @Autowired
@@ -38,10 +44,6 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
         Category composant = categoryRepository.save(new Category(null ,"composant", "tous les composants et accessoires",null));
         Category audio = categoryRepository.save(new Category(null ,"audio", "tous les audios et accessoires",null));
         Category  jeuxVideo = categoryRepository.save(new Category(null ," jeux video", "tous les  jeux video",null));
-
-
-
-
 
         articleRepository.save(new Article(null, "Samddddddddddddddddddsung S8", 250, smartphone));
         articleRepository.save(new Article(null, "Samdddddddddddddddsung S9", 300, smartphone));
@@ -71,6 +73,10 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
         articleRepository.save(new Article(null, "thelastofyours", 200, jeuxVideo));
 
         // Utilisation du logger pour afficher les articles
-        articleRepository.findAll().forEach(a -> logger.info(a.toString()));
+        // articleRepository.findAll().forEach(a -> logger.info(a.toString()));
+
+
+
+
     }
 }
