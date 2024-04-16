@@ -117,4 +117,9 @@ public class ArticleController {
         }
         return "redirect:/index";
     }
+
+    @GetMapping("/403")
+    public String error() {
+        return "403";
+    }
 }
