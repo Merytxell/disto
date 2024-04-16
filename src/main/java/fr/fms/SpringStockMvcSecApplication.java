@@ -86,7 +86,7 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
         // Utilisation du logger pour afficher les articles
         articleRepository.findAll().forEach(a -> logger.info(a.toString()));
 
-        //generateData();
+        generateData();
     }
 
     public void generateData(){
