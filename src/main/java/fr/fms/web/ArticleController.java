@@ -1,4 +1,5 @@
 package fr.fms.web;
+
 import fr.fms.dao.ArticleRepository;
 import fr.fms.dao.CategoryRepository;
 import fr.fms.entities.Article;
@@ -13,17 +14,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class ArticleController {
-String articleString = "article";
     private final ArticleRepository articleRepository;
     private final CategoryRepository categoryRepository;
+    String articleString = "article";
+
     @Autowired
-    public ArticleController(ArticleRepository articleRepository, CategoryRepository categoryRepository){
+    public ArticleController(ArticleRepository articleRepository, CategoryRepository categoryRepository) {
         this.articleRepository = articleRepository;
         this.categoryRepository = categoryRepository;
     }
@@ -33,29 +36,32 @@ String articleString = "article";
     public String index(Model model, @RequestParam(name = "page", defaultValue = "0") int page,
                         @RequestParam(name = "keyword", defaultValue = "") String kw,
                         @RequestParam(name = "category", defaultValue = "") String category) {
-        //le model est fourni par spring, je peux l'utiliser comme ci
-if (!kw.isEmpty()) {
 
-    // ! Affichage des articles (avec mot clé ou non "")
-    Page<Article> articles = articleRepository.findByDescriptionContains(kw, PageRequest.of(page, 5));
-    model.addAttribute("listArticle", articles.getContent());
-    model.addAttribute("pages", new int[articles.getTotalPages()]);
-    model.addAttribute("currentPage", page);
-    model.addAttribute("keyword", kw);
-} else if (!category.isEmpty()){
-//        // ! Affichage des articles par catégories
+        // * Si il y a un mot clé
+        if (!kw.isEmpty()) {
+            // ! Affichage des articles (avec mot clé ou non "")
+            Page<Article> articles = articleRepository.findByDescriptionContains(kw, PageRequest.of(page, 5));
+            model.addAttribute("listArticle", articles.getContent());
+            model.addAttribute("pages", new int[articles.getTotalPages()]);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("keyword", kw);
+
+            // * Si il y a une catégorie
+        } else if (!category.isEmpty()) {
+            // ! Affichage des articles par catégories
             Page<Article> articlesByCategory = articleRepository.findByCategoryName(category, PageRequest.of(page, 5));
             model.addAttribute("listArticle", articlesByCategory.getContent());
             model.addAttribute("pages", new int[articlesByCategory.getTotalPages()]);
             model.addAttribute("currentPage", page);
             model.addAttribute("category", category);
-        } else {
 
-        Page<Article> allArticles = articleRepository.findAll(PageRequest.of(page,5));
-        model.addAttribute("listArticle", allArticles.getContent());
-        model.addAttribute("pages", new int[allArticles.getTotalPages()]);
-        model.addAttribute("currentPage", page);
-}
+            // * Si il y a rien
+        } else {
+            Page<Article> allArticles = articleRepository.findAll(PageRequest.of(page, 5));
+            model.addAttribute("listArticle", allArticles.getContent());
+            model.addAttribute("pages", new int[allArticles.getTotalPages()]);
+            model.addAttribute("currentPage", page);
+        }
         // ! Affichage de la liste des catégories
         List<Category> listCategories = categoryRepository.findAll();
         model.addAttribute("categories", listCategories);
@@ -99,10 +105,10 @@ if (!kw.isEmpty()) {
 
     //article update methode
     @PostMapping("/toUpdate")
-    public String toUpdate(Long id, @Valid @ModelAttribute("updatedArticle")ArticleToUpdateDTO updatedArticleDTO, BindingResult bindingResult) {
+    public String toUpdate(Long id, @Valid @ModelAttribute("updatedArticle") ArticleToUpdateDTO updatedArticleDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return articleString;
         Optional<Article> articleToUpdate = articleRepository.findById(id);
-        if (articleToUpdate.isPresent()){
+        if (articleToUpdate.isPresent()) {
             Article article = articleToUpdate.get();
             article.setId(updatedArticleDTO.getId());
             article.setDescription(updatedArticleDTO.getDescription());
