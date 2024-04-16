@@ -22,11 +22,11 @@ public class Cart implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
-    private String customer;
+    private int quantity;
     private double totalPrice;
 
-    @OneToMany(mappedBy = "cart")
-    private Collection<Article> articles;
+    @ManyToOne
+    private Article article;
 
     }
 

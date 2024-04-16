@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Size;
@@ -28,6 +29,9 @@ public class Article implements Serializable {
 
     @ManyToOne
     private Category category;
+
+    @OneToMany(mappedBy = "article")
+    private Collection<Cart> carts;
 
     public Article(String description, double price) {
         this.description = description;
