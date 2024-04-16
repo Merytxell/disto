@@ -10,8 +10,6 @@ import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Size;
-
-
 @Entity
 @Data
 @NoArgsConstructor
