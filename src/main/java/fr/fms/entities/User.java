@@ -18,9 +18,9 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Pattern(regexp = "^[A-Za-z0-9._-]+@[A-Za-z0-9._-]+\\.[a-z]{2,}$",
-            message = "Invalid email")
-    private String email;
+    @Pattern(regexp = "^[A-Za-z0-9._-]{6,12}$",
+            message = "username must be of 6 to 12 length with no special characters")
+    private String username;
 
     @Pattern(regexp = "^((?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])).{6,}$",
             message = "password must contains at least 1 uppercase, 1 lowercase, 1 special character and 1 digit")
