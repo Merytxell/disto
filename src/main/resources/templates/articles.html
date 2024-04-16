@@ -10,11 +10,23 @@
 <body>
 <div layout:fragment="content">
     <div class="container">
+        <div class="panel panel-primary cat-container">
+            <div class="panel-heading">Catégories</div>
+            <div class="panel-body">
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item" th:each="c:${categories}">
+                        <a th:href="@{/index(category=${c.name})}" th:text="${c.name}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container">
         <div class="panel panel-primary">
             <div class="panel-heading">Liste des articles</div>
 
             <div class="panel-body">
-                <form method="get" th:action="@{/index}">
+                <form method="get" th:action="@{/index(category=${category})}">
                     <label>keyword</label>
                     <input name="keyword" th:value="${keyword}" type="text">
                     <button class="btn btn-primary" type="submit"> Search</button>
@@ -31,7 +43,7 @@
                         <td th:text="${a.price}"></td>
                         <td>
                             <a class="btn btn-danger"
-                               th:href="@{/delete(id=${a.id}, page=${currentPage}, keyword=${keyword})}">Delete</a>
+                               th:href="@{/delete(id=${a.id}, page=${currentPage}, keyword=${keyword}, category=${category})}">Delete</a>
 
                         </td>
                         <td>
@@ -43,7 +55,8 @@
                 </table>
                 <ul class="nav nav-pills">
                     <li th:class="${currentPage==status.index}?'active':''" th:each="page, status:${pages}">
-                        <a th:href="@{/index(page=${status.index}, keyword=${keyword})}" th:text="${status.index}"></a>
+                        <a th:href="@{/index(page=${status.index}, keyword=${keyword}, category=${category})}"
+                           th:text="${status.index}"></a>
                     </li>
                 </ul>
             </div>

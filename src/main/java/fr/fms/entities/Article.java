@@ -10,8 +10,6 @@ import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Size;
-
-
 @Entity
 @Data
 @NoArgsConstructor
@@ -30,9 +28,6 @@ public class Article implements Serializable {
 
     @ManyToOne
     private Category category;
-
-    @ManyToOne
-    private Cart cart;
 
     public Article(String description, double price) {
         this.description = description;
