@@ -29,9 +29,6 @@ public class Article implements Serializable {
     @ManyToOne
     private Category category;
 
-    @ManyToOne
-    private Cart cart;
-
     public Article(String description, double price) {
         this.description = description;
         this.price = price;
