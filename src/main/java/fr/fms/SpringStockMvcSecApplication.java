@@ -113,9 +113,7 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
         articleRepository.save(new Article(null, "SteelSeries Arctis 7", 150, audio));
         articleRepository.save(new Article(null, "League of Legends", 100, jeuxVideo));
 
-<<<<<<< HEAD
-        
-=======
+
 
 
 
@@ -150,7 +148,7 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
         articleRepository.findAll().forEach(a -> logger.info(a.toString()));
 
         generateData();
->>>>>>> branche_de_claire
+
     }
 
     public void generateData() {
