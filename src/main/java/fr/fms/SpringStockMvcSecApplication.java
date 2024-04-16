@@ -114,9 +114,6 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
         articleRepository.save(new Article(null, "League of Legends", 100, jeuxVideo));
 
 
-
-
-
         articleRepository.save(new Article(null, "Samddddddddddddddddddsung S8", 250, smartphone));
         articleRepository.save(new Article(null, "Samdddddddddddddddsung S9", 300, smartphone));
         articleRepository.save(new Article(null, "Iphdddddddddddddddone 10", 500, smartphone));
@@ -148,6 +145,8 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
         articleRepository.findAll().forEach(a -> logger.info(a.toString()));
 
         generateData();
+
+
 
     }
 
