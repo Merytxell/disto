@@ -30,4 +30,9 @@ public class OrderController {
         customerRepository.save(customer);
         return "redirect:/index";
     }
+
+    @GetMapping("/order")
+    private String order(){
+        return "order";
+    }
 }
