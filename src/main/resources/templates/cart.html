@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="layout"
+                 xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+                 xmlns:th="http://thymeleaf.org" >
+
+<head>
+    <meta charset="UTF-8">
+    <title>Panier</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="col-md-6 col-xs-8">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Panier</div>
+
+
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <th>Id</th>
+                        <th>Article</th>
+                        <th>Prix</th>
+                    </tr>
+                    <tr th:each="a:${listArticle}">
+                        <td th:text="${a.description}"></td>
+                        <td th:text="${a.price}"></td>
+                        <td>
+                            <a class="btn btn-danger"
+                               th:href="@{/delete(id=${a.id}}">Payer</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-danger"
+                               th:href="@{/delete(id=${a.id}}">Delete</a>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+
+
