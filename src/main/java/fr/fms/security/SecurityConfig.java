@@ -25,12 +25,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        PasswordEncoder pe = passwordEncoder();
+
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
-                .usersByUsernameQuery("select username as principal, password as credentials, active from T_Users where username=?")
-                .authoritiesByUsernameQuery("select username as principal, role as role from T_Users_Roles where username=?")
-                .rolePrefix("ROLES_")
+                .usersByUsernameQuery("select username as principal,  password as credentials, active from user where username=?")
+                .authoritiesByUsernameQuery("select users_username as principal, roles_name as role from user_roles where users_username=?")
+                .rolePrefix("ROLE_")
                 .passwordEncoder(passwordEncoder());
 
     }
@@ -42,10 +42,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin();
+        http.formLogin().defaultSuccessUrl("/index",true);
 
-        http.authorizeRequests().antMatchers("/index", "/save", "/delete", "/edit", "/article").hasRole("ADMIN");
-        http.authorizeRequests().antMatchers("/index").hasRole("USER");
+        http.authorizeRequests().antMatchers("/index", "/save", "/delete", "/edit", "/article").hasRole("admins");
+        http.authorizeRequests().antMatchers("/index").hasRole("users");
 
         http.exceptionHandling().accessDeniedPage("/403");
     }
