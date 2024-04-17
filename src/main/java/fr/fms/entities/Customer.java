@@ -5,14 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Collection;
 
 @Entity
 @Data
@@ -39,6 +37,7 @@ public class Customer implements Serializable {
     @Pattern(regexp = "^[0-9]{10,14}$", message = "contains only numbers")
     private String phone;
 
-
+    @OneToMany(mappedBy = "customer")
+    private Collection<Order> orders;
 
 }
