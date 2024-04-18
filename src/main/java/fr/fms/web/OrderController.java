@@ -32,7 +32,8 @@ public class OrderController {
     }
 
     @GetMapping("/order")
-    private String order(){
+    private String order(Model model){
+
         return "order";
     }
 }
