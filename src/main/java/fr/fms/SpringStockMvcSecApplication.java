@@ -153,8 +153,6 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
 
         generateData();
 
-
-
     }
 
     public void generateData() {
