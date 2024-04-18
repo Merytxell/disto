@@ -17,7 +17,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication
@@ -121,32 +123,7 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
         articleRepository.save(new Article(null, "League of Legends", 100, jeuxVideo));
 
 
-        articleRepository.save(new Article(null, "Samddddddddddddddddddsung S8", 250, smartphone));
-        articleRepository.save(new Article(null, "Samdddddddddddddddsung S9", 300, smartphone));
-        articleRepository.save(new Article(null, "Iphdddddddddddddddone 10", 500, smartphone));
-        articleRepository.save(new Article(null, "Sadddddddddddddddddddmsung S8", 250,smartphone));
-        articleRepository.save(new Article(null, "Samddddddddddddddddddsung S9", 300, smartphone));
-        articleRepository.save(new Article(null, "Ipdddddddddddddddhone 10", 500, smartphone));
-        articleRepository.save(new Article(null, "Samdddddddddddsung S8", 250, smartphone));
-        articleRepository.save(new Article(null, "Samsdddddddddddddung S9", 300, smartphone));
-        articleRepository.save(new Article(null, "Iphdddddddddddddddone 10", 500, smartphone));
-        articleRepository.save(new Article(null, "Samddddddddddddddddddsung S8", 250, smartphone));
-        articleRepository.save(new Article(null, "Samsddddddddddddddddung S9", 300, smartphone));
-        articleRepository.save(new Article(null, "Iphdddddddddddddddddone 10", 500, smartphone));
-        articleRepository.save(new Article(null, "Azuzussss1", 500, pc));
-        articleRepository.save(new Article(null, "Azuzussss4", 600, pc));
-        articleRepository.save(new Article(null, "Azuzussss8", 700, pc));
-        articleRepository.save(new Article(null, "GalaxyTable", 300, tablet));
-        articleRepository.save(new Article(null, "GalaxyTable3", 500, tablet));
-        articleRepository.save(new Article(null, "GalaxyTable6", 600, tablet));
-        articleRepository.save(new Article(null, "RAM-AMDEFGH", 200, composant));
-        articleRepository.save(new Article(null, "RAM-AMDEFGHIJK", 300, composant));
-        articleRepository.save(new Article(null, "RR-paude10", 300, audio));
-        articleRepository.save(new Article(null, "RR-paude11", 400, audio));
-        articleRepository.save(new Article(null, "RR-paude12", 500, audio));
-        articleRepository.save(new Article(null, "colofduttyhardcore", 200, jeuxVideo));
-        articleRepository.save(new Article(null, "lessimseux", 200, jeuxVideo));
-        articleRepository.save(new Article(null, "thelastofyours", 200, jeuxVideo));
+
 
         // Utilisation du logger pour afficher les articles
         articleRepository.findAll().forEach(a -> logger.info(a.toString()));
@@ -160,12 +137,23 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
         Role user = roleRepository.save(new Role("users", null));
         Role admin = roleRepository.save(new Role( "admins", null));
 
-        List<Role> fredRoles = new ArrayList<>();
-        fredRoles.add(admin);
-        fredRoles.add(user);
+//        List<Role> fredRoles = new ArrayList<>();
+//        fredRoles.add(admin);
+//        fredRoles.add(user);
+//        List<Role> josetteRoles=new ArrayList<>();
+//        josetteRoles.add(user);
+//
+//        String encodedPassword = passwordEncoder.encode("FmsAcad@2024$");
+//        User fred = userRepository.save(new User( "fred2024", encodedPassword, true, fredRoles));
+//        User josette = userRepository.save(new User( "josette", encodedPassword, true, josetteRoles));
 
+        createUserWithRoles ("fred2024","fmsAcad@2024$", true, admin,user);
+        createUserWithRoles ("Josette", "@Pelote2024!", true, user);
 
-        String encodedPassword = passwordEncoder.encode("FmsAcad@2024$");
-        User fred = userRepository.save(new User( "fred2024", encodedPassword, true, fredRoles));
     }
+ private void createUserWithRoles (String username, String password, boolean active, Role... roles){
+        List<Role>userRoles = Arrays.asList(roles);
+        String encodedPassword = passwordEncoder.encode(password);
+        userRepository.save(new User (username, encodedPassword, active, userRoles));
+ }
 }
