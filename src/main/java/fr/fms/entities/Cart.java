@@ -25,8 +25,8 @@ public class Cart implements Serializable {
     private String customer;
     private double totalPrice;
 
-    @OneToMany(mappedBy = "cart")
-    private Collection<Article> articles;
+//    @OneToMany(mappedBy = "cart")
+//    private Collection<Article> articles;
 
     }
 

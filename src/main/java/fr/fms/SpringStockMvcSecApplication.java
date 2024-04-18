@@ -120,34 +120,6 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
         articleRepository.save(new Article(null, "SteelSeries Arctis 7", 150, audio));
         articleRepository.save(new Article(null, "League of Legends", 100, jeuxVideo));
 
-
-        articleRepository.save(new Article(null, "Samddddddddddddddddddsung S8", 250, smartphone));
-        articleRepository.save(new Article(null, "Samdddddddddddddddsung S9", 300, smartphone));
-        articleRepository.save(new Article(null, "Iphdddddddddddddddone 10", 500, smartphone));
-        articleRepository.save(new Article(null, "Sadddddddddddddddddddmsung S8", 250,smartphone));
-        articleRepository.save(new Article(null, "Samddddddddddddddddddsung S9", 300, smartphone));
-        articleRepository.save(new Article(null, "Ipdddddddddddddddhone 10", 500, smartphone));
-        articleRepository.save(new Article(null, "Samdddddddddddsung S8", 250, smartphone));
-        articleRepository.save(new Article(null, "Samsdddddddddddddung S9", 300, smartphone));
-        articleRepository.save(new Article(null, "Iphdddddddddddddddone 10", 500, smartphone));
-        articleRepository.save(new Article(null, "Samddddddddddddddddddsung S8", 250, smartphone));
-        articleRepository.save(new Article(null, "Samsddddddddddddddddung S9", 300, smartphone));
-        articleRepository.save(new Article(null, "Iphdddddddddddddddddone 10", 500, smartphone));
-        articleRepository.save(new Article(null, "Azuzussss1", 500, pc));
-        articleRepository.save(new Article(null, "Azuzussss4", 600, pc));
-        articleRepository.save(new Article(null, "Azuzussss8", 700, pc));
-        articleRepository.save(new Article(null, "GalaxyTable", 300, tablet));
-        articleRepository.save(new Article(null, "GalaxyTable3", 500, tablet));
-        articleRepository.save(new Article(null, "GalaxyTable6", 600, tablet));
-        articleRepository.save(new Article(null, "RAM-AMDEFGH", 200, composant));
-        articleRepository.save(new Article(null, "RAM-AMDEFGHIJK", 300, composant));
-        articleRepository.save(new Article(null, "RR-paude10", 300, audio));
-        articleRepository.save(new Article(null, "RR-paude11", 400, audio));
-        articleRepository.save(new Article(null, "RR-paude12", 500, audio));
-        articleRepository.save(new Article(null, "colofduttyhardcore", 200, jeuxVideo));
-        articleRepository.save(new Article(null, "lessimseux", 200, jeuxVideo));
-        articleRepository.save(new Article(null, "thelastofyours", 200, jeuxVideo));
-
         // Utilisation du logger pour afficher les articles
         articleRepository.findAll().forEach(a -> logger.info(a.toString()));
 
