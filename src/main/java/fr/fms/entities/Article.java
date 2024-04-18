@@ -31,7 +31,10 @@ public class Article implements Serializable {
     private Category category;
 
     @OneToMany(mappedBy = "article")
-    private Collection<Cart> carts;
+    @ToString.Exclude
+    private Collection<OrderItem> orderItems;
+
+
 
     public Article(String description, double price) {
         this.description = description;

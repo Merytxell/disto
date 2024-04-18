@@ -20,7 +20,8 @@ public class CartController {
     IBusinessImpl business;
 
     @GetMapping("/cart")
-    public String cart() {
+    public String cart(Model model) {
+        model.addAttribute("listArticles", business.getCartContent());
         return "cart";
     }
 
@@ -31,6 +32,8 @@ public class CartController {
             Article article = articleOptional.get();
             business.addOneArticleToCart(article);
             model.addAttribute("listArticles", business.getCartContent());
+            model.addAttribute("quantityArticle", business.getOrderItem(article).getQuantity());
+            model.addAttribute("priceArticle", business.getOrderItem(article).getTotalPrice());
             return "cart";
         } else {
             return "403";

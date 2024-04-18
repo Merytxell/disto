@@ -19,18 +19,17 @@ public class OrderItem implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
-    private int quantity;
+
+    private int quantity ;
+
     private double totalPrice;
 
     @ManyToOne
     private Article article;
 
-    public int setQuantity(int quantity) {
-        return quantity;
     };
-    }
+
 
 
 

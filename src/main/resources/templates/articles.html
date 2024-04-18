@@ -41,6 +41,7 @@
                         <td th:text="${a.id}"></td>
                         <td th:text="${a.description}"></td>
                         <td th:text="${a.price}"></td>
+                        <td><a th:href="@{/addCart(id=${a.id})}">Add/cart</a></td>
                         <td>
                             <a class="btn btn-danger"
                                th:href="@{/delete(id=${a.id}, page=${currentPage}, keyword=${keyword}, category=${category})}">Delete</a>
