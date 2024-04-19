@@ -21,39 +21,39 @@ public class IBusinessImpl implements IBusiness {
   @Autowired
   OrderItemRepository orderItemRepository;
 
-  Collection<Article> cart = new ArrayList<>();
-
   @Override
   public void addOneArticleToCart(Article article) {
    if (article != null) {
-     boolean articleAlreadyInCart = isArticleInCart(article.getId());
-     if (articleAlreadyInCart){
         Optional<OrderItem> item =  orderItemRepository.findByArticleId(article.getId());
-
         if (item.isPresent()){
           OrderItem it=item.get();
           int newQuantity = it.getQuantity() +1;
           it.setQuantity(newQuantity);
           it.setTotalPrice(calculateTotalPrice(newQuantity, article));
           orderItemRepository.save(it);
+        } else {
+          OrderItem newOrderitem = new OrderItem();
+          newOrderitem.setQuantity(1);
+          newOrderitem.setTotalPrice(article.getPrice());
+          newOrderitem.setArticle(article);
+          orderItemRepository.save(newOrderitem);
         }
-     } else {
-
-       cart.add(article);
-       OrderItem item = new OrderItem();
-       item.setQuantity(1);
-       item.setTotalPrice(article.getPrice());
-       item.setArticle(article);
-       orderItemRepository.save(item);
-     }
    } else {
     System.out.println("Voila l'erreur");
     }
   }
 
   @Override
-  public void removeOneArticleFromCart(Article article) {
-    cart.remove(article);
+  public void removeOneArticleFromCart(Long id) {
+    OrderItem orderItem = getOrderItem(id);
+    if(orderItem.getQuantity() > 1) {
+      int newQuantity = orderItem.getQuantity() -1;
+      orderItem.setQuantity(newQuantity);
+      orderItem.setTotalPrice(calculateTotalPrice(newQuantity, orderItem.getArticle()));
+      orderItemRepository.save(orderItem);
+    } else {
+      orderItemRepository.deleteById(id);
+    }
   }
 
   @Override
@@ -64,28 +64,19 @@ public class IBusinessImpl implements IBusiness {
   }
 
   @Override
-  public List<Article> getCartContent(){
-    return (List<Article>) cart;
-  }
-
-  @Override
-  public boolean isArticleInCart(Long articleId){
-    for ( Article article: cart ) {
-      if (Objects.equals(articleId, article.getId())) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  @Override
-  public OrderItem getOrderItem(Article article) {
-    Optional<OrderItem> item = orderItemRepository.findByArticleId(article.getId());
+  public OrderItem getOrderItem(Long id) {
+    Optional<OrderItem> item = orderItemRepository.findById(id);
     if (item.isPresent()) {
       OrderItem orderItem = item.get();
       return orderItem;
     }
       return null;
+  }
+
+  @Override
+  public List<OrderItem> getOrderItemContent(){
+    List<OrderItem> orderItemList = orderItemRepository.findAll();
+    return orderItemList;
   }
 }
 

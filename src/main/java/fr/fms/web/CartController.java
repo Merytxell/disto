@@ -21,7 +21,7 @@ public class CartController {
 
     @GetMapping("/cart")
     public String cart(Model model) {
-        model.addAttribute("listArticles", business.getCartContent());
+        model.addAttribute("listOrderItems", business.getOrderItemContent());
         return "cart";
     }
 
@@ -31,13 +31,18 @@ public class CartController {
         if (articleOptional.isPresent()) {
             Article article = articleOptional.get();
             business.addOneArticleToCart(article);
-            model.addAttribute("listArticles", business.getCartContent());
-            model.addAttribute("quantityArticle", business.getOrderItem(article).getQuantity());
-            model.addAttribute("priceArticle", business.getOrderItem(article).getTotalPrice());
+            model.addAttribute("listOrderItems", business.getOrderItemContent());
             return "cart";
         } else {
             return "403";
         }
+    }
+
+    @GetMapping("/deleteOrderItem")
+    public String deleteOrderItem(Long id, Model model) {
+        business.removeOneArticleFromCart(id);
+        model.addAttribute("listOrderItems", business.getOrderItemContent());
+        return "cart";
     }
 }
 
