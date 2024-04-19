@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr" layout:decorate="layout"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://thymeleaf.org">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security5">
 <head>
     <meta charset="utf-8">
     <title>Mes articles</title>
@@ -41,12 +42,13 @@
                         <td th:text="${a.id}"></td>
                         <td th:text="${a.description}"></td>
                         <td th:text="${a.price}"></td>
-                        <td>
+                        <td ><a th:href="@{/addCart(id=${a.id})}">Add/Cart</a> </td>
+                        <td sec:authorize="hasRole('ROLE_admins')">
                             <a class="btn btn-danger"
                                th:href="@{/delete(id=${a.id}, page=${currentPage}, keyword=${keyword}, category=${category})}">Delete</a>
 
                         </td>
-                        <td>
+                        <td sec:authorize="hasRole('ROLE_admins')">
                             <a class="btn btn-primary"
                                th:href="@{/update(id=${a.id})}">Update</a>
 

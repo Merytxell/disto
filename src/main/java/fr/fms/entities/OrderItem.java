@@ -8,7 +8,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
 
 @Entity
 @Data
@@ -16,21 +15,21 @@ import java.util.Collection;
 @NoArgsConstructor
 @ToString
 
-public class Cart implements Serializable {
+public class OrderItem implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
-    private String customer;
+
+    private int quantity ;
+
     private double totalPrice;
 
-    /*
-    @OneToMany(mappedBy = "cart")
-    private Collection<Article> articles;
-     */
+    @ManyToOne
+    private Article article;
 
-    }
+    };
+
 
 
 

@@ -21,19 +21,17 @@
                         <th>Id</th>
                         <th>Article</th>
                         <th>Prix</th>
+                        <th>Quantité</th>
                     </tr>
-                    <tr th:each="a:${listArticle}">
-                        <td th:text="${a.description}"></td>
-                        <td th:text="${a.price}"></td>
+                    <tr th:each="i:${listOrderItems}">
+                        <td th:text="${i.article.id}"></td>
+                        <td th:text="${i.article.description}"></td>
+                        <td th:text="${i.totalPrice}"></td>
+                        <td th:text="${i.quantity}"></td>
                         <td>
                             <a class="btn btn-danger"
-                               th:href="@{/delete(id=${a.id}}">Payer</a>
+                               th:href="@{/deleteOrderItem(id=${i.id})}">Supprimer</a>
                         </td>
-                        <td>
-                            <a class="btn btn-danger"
-                               th:href="@{/delete(id=${a.id}}">Delete</a>
-                        </td>
-
                     </tr>
                 </table>
             </div>

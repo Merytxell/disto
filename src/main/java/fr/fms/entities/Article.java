@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Size;
@@ -27,11 +28,18 @@ public class Article implements Serializable {
     private double price;
 
     @ManyToOne
-    private Category category;
+   private Category category;
+
+    @OneToMany(mappedBy = "article")
+    @ToString.Exclude
+    private Collection<OrderItem> orderItems;
+
+
 
     public Article(String description, double price) {
         this.description = description;
         this.price = price;
     }
+
 
 }
