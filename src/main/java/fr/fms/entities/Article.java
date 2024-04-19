@@ -28,7 +28,7 @@ public class Article implements Serializable {
     private double price;
 
     @ManyToOne
-    private Category category;
+   private Category category;
 
     @OneToMany(mappedBy = "article")
     @ToString.Exclude
@@ -40,5 +40,6 @@ public class Article implements Serializable {
         this.description = description;
         this.price = price;
     }
+
 
 }
