@@ -43,7 +43,6 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
     @Autowired
     public SpringStockMvcSecApplication(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
-
     }
 
 
