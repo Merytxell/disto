@@ -88,6 +88,7 @@ public class ArticleController {
     @GetMapping("/article")
     public String article(Model model) {
         model.addAttribute(articleString, new Article());
+
         return articleString;
     }
 
