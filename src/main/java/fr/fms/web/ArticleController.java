@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-
+/** article controller
+ * @author Gilles
+ * */
 @Controller
 public class ArticleController {
     private final ArticleRepository articleRepository;
@@ -30,60 +32,70 @@ public class ArticleController {
         this.articleRepository = articleRepository;
         this.categoryRepository = categoryRepository;
     }
-
-    // @RequestMapping(value="/index", method=RequestMethod.GET)
+    /** "/index" mapping
+     * @author Gilles
+     * @param model spring model
+     * @param @RequestParam (name = page name, defaultValue = default page number, int page = page number)
+     * */
     @GetMapping("/index")
     public String index(Model model, @RequestParam(name = "page", defaultValue = "0") int page,
                         @RequestParam(name = "keyword", defaultValue = "") String kw,
                         @RequestParam(name = "category", defaultValue = "") String category) {
 
-        // * Si il y a un mot clé
+
         if (!kw.isEmpty()) {
-            // ! Affichage des articles (avec mot clé ou non "")
             Page<Article> articles = articleRepository.findByDescriptionContains(kw, PageRequest.of(page, 5));
             model.addAttribute("listArticle", articles.getContent());
             model.addAttribute("pages", new int[articles.getTotalPages()]);
             model.addAttribute("currentPage", page);
             model.addAttribute("keyword", kw);
 
-            // * Si il y a une catégorie
+
         } else if (!category.isEmpty()) {
-            // ! Affichage des articles par catégories
             Page<Article> articlesByCategory = articleRepository.findByCategoryName(category, PageRequest.of(page, 5));
             model.addAttribute("listArticle", articlesByCategory.getContent());
             model.addAttribute("pages", new int[articlesByCategory.getTotalPages()]);
             model.addAttribute("currentPage", page);
             model.addAttribute("category", category);
 
-            // * Si il y a rien
+
         } else {
             Page<Article> allArticles = articleRepository.findAll(PageRequest.of(page, 5));
             model.addAttribute("listArticle", allArticles.getContent());
             model.addAttribute("pages", new int[allArticles.getTotalPages()]);
             model.addAttribute("currentPage", page);
         }
-        // ! Affichage de la liste des catégories
         List<Category> listCategories = categoryRepository.findAll();
         model.addAttribute("categories", listCategories);
-        return "articles"; //cette méthode retourne au dispatcherServerlet une vue
+        return "articles";
     }
-
-    // delete button methode
+    /** delete mapping
+     * @author Gilles
+     * @param id article id
+     * @param page page number
+     * @params keyword searched keyword
+     * */
     @GetMapping("/delete")
     public String delete(Long id, int page, String keyword) {
         articleRepository.deleteById(id);
         return "redirect:/index?page=" + page + "&keyword=" + keyword;
     }
 
-    // add new article
+    /** add new article mapping
+     * @author Gilles
+     * @param model spring model
+     * */
     @GetMapping("/article")
     public String article(Model model) {
-        // on inject un article par defaut dans le formulaire de saisi
         model.addAttribute(articleString, new Article());
         return articleString;
     }
 
-    // update button methode
+    /** update article mapping
+     * @author Gilles
+     * @param model spring model
+     * @param id article id to update
+     * */
     @GetMapping("/update")
     public String update(Model model, Long id) {
         // on inject un article par defaut dans le formulaire de saisi
@@ -93,17 +105,23 @@ public class ArticleController {
         return "update";
     }
 
-    //New article save methode
+    /** save article
+     * @author Gilles
+     * @param articleDTO article to save
+     * @param bindingResult validation object
+     * */
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute("article") ArticleDTO articleDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return articleString;
-        // s'il n'y a pas de saisie d'un champ selon certains critères, pas d'insertion en base
         Article article = new Article(articleDTO.getDescription(), articleDTO.getPrice());
         articleRepository.save(article);
         return "redirect:/index";
     }
-
-    //article update methode
+    /** save article
+     * @author Gilles
+     * @param updatedArticleDTO article to update
+     * @param bindingResult validation object
+     * */
     @PostMapping("/toUpdate")
     public String toUpdate(Long id, @Valid @ModelAttribute("updatedArticle") ArticleToUpdateDTO updatedArticleDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return articleString;
@@ -118,6 +136,9 @@ public class ArticleController {
         return "redirect:/index";
     }
 
+    /** forbidden page
+     * @author Gilles
+     * */
     @GetMapping("/403")
     public String error() {
         return "403";

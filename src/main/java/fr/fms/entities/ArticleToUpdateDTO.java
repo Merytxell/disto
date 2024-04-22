@@ -5,7 +5,9 @@ import lombok.Setter;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Size;
-
+/** Article To Update class definition
+ * @author Gilles
+ * */
 @Setter
 @Getter
 public class ArticleToUpdateDTO {

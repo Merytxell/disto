@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/** All business implementation
+ * @author Alejandra
+ * */
 @Service
 public class IBusinessImpl implements IBusiness {
 
