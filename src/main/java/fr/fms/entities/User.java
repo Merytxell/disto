@@ -18,6 +18,7 @@ public class User implements Serializable {
     /**
      * User user name
      * */
+    @Id
     @Pattern(regexp = "^[A-Za-z0-9._-]{6,12}$",
             message = "username must be of 6 to 12 length with no special characters")
     private String username;
