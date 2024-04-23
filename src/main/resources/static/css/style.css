@@ -20,3 +20,12 @@
 	border-bottom-left-radius:0;
 	border-right-width: 1px;
 }
+
+        .error-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+        .error-actions {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }

@@ -16,9 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.sql.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -122,27 +119,17 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
         articleRepository.save(new Article(null, "League of Legends", 100, jeuxVideo, null));
 
 
-        // Utilisation du logger pour afficher les articles
         articleRepository.findAll().forEach(a -> logger.info(a.toString()));
+        System.out.println("articleRepository" + articleRepository.toString());
+
 
         generateData();
-
     }
 
     public void generateData() {
         Role guest = roleRepository.save(new Role( "visiteurs", null));
         Role user = roleRepository.save(new Role("users", null));
         Role admin = roleRepository.save(new Role( "admins", null));
-
-//        List<Role> fredRoles = new ArrayList<>();
-//        fredRoles.add(admin);
-//        fredRoles.add(user);
-//        List<Role> josetteRoles=new ArrayList<>();
-//        josetteRoles.add(user);
-//
-//        String encodedPassword = passwordEncoder.encode("FmsAcad@2024$");
-//        User fred = userRepository.save(new User( "fred2024", encodedPassword, true, fredRoles));
-//        User josette = userRepository.save(new User( "josette", encodedPassword, true, josetteRoles));
 
         createUserWithRoles ("fred2024","fmsAcad@2024$", true, admin,user);
         createUserWithRoles ("Josette", "@Pelote2024!", true, user);

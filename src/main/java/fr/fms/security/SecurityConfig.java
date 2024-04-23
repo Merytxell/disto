@@ -17,16 +17,24 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
-
+/** Security configuration
+ * @author Claire
+ * */
 @Configuration
 @EnableWebSecurity
 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-
+    /**
+     * data source = data base
+     * */
     @Autowired
     DataSource dataSource;
 
+    /** configuration
+     * @author Claire
+     * @param auth spring auth service
+     * */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
@@ -38,19 +46,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder());
 
     }
-
+    /** password encoder
+     * @author Claire
+     * */
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    //    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.formLogin().loginPage("/login").defaultSuccessUrl("/index",true);
-//        http.authorizeRequests().antMatchers("/index", "/save", "/delete", "/edit", "/article").hasRole("admins");
-//        http.authorizeRequests().antMatchers("/index").hasRole("users");
-//        http.exceptionHandling().accessDeniedPage("/403");
-//    }
+    /** configuration
+     * @author Claire
+     * @param http spring http service
+     * */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -58,8 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/index", true)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/index", "/save", "/delete", "/edit", "/article").hasRole("admins")
-                .antMatchers("/index").hasRole("users")
+                .antMatchers( "/save", "/delete", "/edit", "/article", "/cart").hasRole("admins")
+                .antMatchers( "/cart").hasRole("users")
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/403")
@@ -67,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutUrl("/login")
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login")
+                .logoutSuccessUrl("/login?logout")
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .permitAll();
