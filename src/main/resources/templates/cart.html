@@ -30,10 +30,11 @@
                         <td th:text="${i.quantity}"></td>
                         <td>
                             <a class="btn btn-danger"
-                               th:href="@{/deleteOrderItem(id=${i.id})}">Supprimer</a>
+                               th:href="@{/deleteOrderItem(id=${i.article.id})}">Supprimer</a>
                         </td>
                     </tr>
                 </table>
+                <div><a th:href="@{/customer}">Passer commande</a></div>
             </div>
         </div>
     </div>
