@@ -13,6 +13,7 @@ import java.util.Collection;
 
 @Entity
 @Data @NoArgsConstructor @AllArgsConstructor @ToString
+@Table(name = "t_order")
 public class Order implements Serializable {
 
     @Id
@@ -26,5 +27,9 @@ public class Order implements Serializable {
 
     @ManyToOne
     private Customer customer;
+
+    @OneToMany(mappedBy = "order")
+    @ToString.Exclude
+    private Collection<OrderItem> orderItems;
 
 }

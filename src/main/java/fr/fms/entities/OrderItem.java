@@ -28,6 +28,9 @@ public class OrderItem implements Serializable {
     @ManyToOne
     private Article article;
 
+    @ManyToOne
+    private Order order;
+
     };
 
 
