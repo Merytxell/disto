@@ -95,9 +95,7 @@ public class IBusinessImpl implements IBusiness {
 
   @Override
   public double getTotalAmountOrder(){
-    double [] totalAmount = {0};
-    cart.values().forEach(orderItem -> totalAmount[0] += orderItem.getTotalPrice() * orderItem.getQuantity());
-    return totalAmount[0];
+    return cart.values().stream().mapToDouble(OrderItem::getTotalPrice).sum();
   }
 
   @Override

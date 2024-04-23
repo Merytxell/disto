@@ -21,12 +21,12 @@ class SpringStockMvcSecApplicationTests {
 
 	@Test
 	void testTotalAmontCart() {
-		business.addOneArticleToCart(new Article(null, "Samsung S8 2024", 250, null));
-		business.addOneArticleToCart(new Article((long)2, "HP Pavilion Laptop",250, 1, null));
-		business.addOneArticleToCart(new Article((long)2, "Samsung S8 2024", 500, 1, null));
-		business.addOneArticleToCart(new Article((long)2, "Samsung",250, 1, null));
+		business.addOneArticleToCart(new Article(1L, "Samsung S8 2024", 200, null, null));
+		business.addOneArticleToCart(new Article(2L, "Test", 200, null, null));
+		business.addOneArticleToCart(new Article(3L, "Test 2", 100, null, null));
+		business.addOneArticleToCart(new Article(4L, "Test 3", 1000, null, null));
 
 
-		assertEquals(business.calculateTotalPrice(int quantity, article) ;
+		assertEquals(1500, business.getTotalAmountOrder()) ;
 	}
 }
