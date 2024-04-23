@@ -11,6 +11,7 @@ import javax.validation.constraints.Size;
 @Setter
 @Getter
 public class ArticleDTO {
+    private Long categoryId;
     @NotNull
     @Size(min = 10, max = 50)
     private String description;

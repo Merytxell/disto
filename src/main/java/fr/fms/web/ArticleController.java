@@ -87,8 +87,10 @@ public class ArticleController {
      * */
     @GetMapping("/article")
     public String article(Model model) {
-        model.addAttribute(articleString, new Article());
-        return articleString;
+        model.addAttribute("article", new Article());
+        List<Category> catList = categoryRepository.findAll();
+        model.addAttribute("catList", catList);
+        return "article";
     }
 
     /** update article mapping
@@ -111,9 +113,15 @@ public class ArticleController {
      * @param bindingResult validation object
      * */
     @PostMapping("/save")
-    public String save(@Valid @ModelAttribute("article") ArticleDTO articleDTO, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) return articleString;
+    public String save(@Valid @ModelAttribute("article") ArticleDTO articleDTO, BindingResult bindingResult,Model model) {
+        if (bindingResult.hasErrors()) {
+            List<Category> catList = categoryRepository.findAll();
+            model.addAttribute("catList", catList);
+            return articleString;
+        }
         Article article = new Article(articleDTO.getDescription(), articleDTO.getPrice());
+        Category category = categoryRepository.findById(articleDTO.getCategoryId()).orElse(null);
+        article.setCategory(category);
         articleRepository.save(article);
         return "redirect:/index";
     }
