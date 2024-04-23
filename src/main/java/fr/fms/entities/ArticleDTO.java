@@ -17,4 +17,5 @@ public class ArticleDTO {
     private String description;
     @DecimalMin("50")
     private double price;
+
 }

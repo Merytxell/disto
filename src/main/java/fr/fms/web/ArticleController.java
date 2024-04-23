@@ -69,17 +69,7 @@ public class ArticleController {
         model.addAttribute("categories", listCategories);
         return "articles";
     }
-    /** delete mapping
-     * @author Gilles
-     * @param id article id
-     * @param page page number
-     * @params keyword searched keyword
-     * */
-    @GetMapping("/delete")
-    public String delete(Long id, int page, String keyword) {
-        articleRepository.deleteById(id);
-        return "redirect:/index?page=" + page + "&keyword=" + keyword;
-    }
+
 
     /** add new article mapping
      * @author Gilles
@@ -92,7 +82,17 @@ public class ArticleController {
         model.addAttribute("catList", catList);
         return articleString;
     }
-
+    /** delete mapping
+     * @author Gilles
+     * @param id article id
+     * @param page page number
+     * @params keyword searched keyword
+     * */
+    @GetMapping("/delete")
+    public String delete(Long id, int page, String keyword) {
+        articleRepository.deleteById(id);
+        return "redirect:/index?page=" + page + "&keyword=" + keyword;
+    }
     /** update article mapping
      * @author Gilles
      * @param model spring model
@@ -103,10 +103,35 @@ public class ArticleController {
         // on inject un article par defaut dans le formulaire de saisi
         Optional<Article> articleToUpdate = articleRepository.findById(id);
         Article article = articleToUpdate.orElse(null);
+        List<Category> catList = categoryRepository.findAll();
+        model.addAttribute("catList", catList);
         model.addAttribute(articleString, article);
         return "update";
     }
+    /** save article
+     * @author Gilles
+     * @param updatedArticleDTO article to update
+     * @param bindingResult validation object
+     * */
+    @PostMapping("/toUpdate")
+    public String toUpdate(Long id, @Valid @ModelAttribute("updatedArticle") ArticleToUpdateDTO updatedArticleDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) return articleString;
 
+        Long categoryId = updatedArticleDTO.getCategoryId();
+        Optional<Category> articleCat = categoryRepository.findById(categoryId);
+        Optional<Article> articleToUpdate = articleRepository.findById(id);
+        if (articleToUpdate.isPresent() && articleCat.isPresent()) {
+            Article article = articleToUpdate.get();
+            Category cat = articleCat.get();
+            article.setId(updatedArticleDTO.getId());
+            article.setDescription(updatedArticleDTO.getDescription());
+            article.setPrice(updatedArticleDTO.getPrice());
+
+            article.setCategory(cat);
+            articleRepository.save(article);
+        }
+        return "redirect:/index";
+    }
     /** save article
      * @author Gilles
      * @param articleDTO article to save
@@ -125,24 +150,7 @@ public class ArticleController {
         articleRepository.save(article);
         return "redirect:/index";
     }
-    /** save article
-     * @author Gilles
-     * @param updatedArticleDTO article to update
-     * @param bindingResult validation object
-     * */
-    @PostMapping("/toUpdate")
-    public String toUpdate(Long id, @Valid @ModelAttribute("updatedArticle") ArticleToUpdateDTO updatedArticleDTO, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) return articleString;
-        Optional<Article> articleToUpdate = articleRepository.findById(id);
-        if (articleToUpdate.isPresent()) {
-            Article article = articleToUpdate.get();
-            article.setId(updatedArticleDTO.getId());
-            article.setDescription(updatedArticleDTO.getDescription());
-            article.setPrice(updatedArticleDTO.getPrice());
-            articleRepository.save(article);
-        }
-        return "redirect:/index";
-    }
+
 
     /** forbidden page
      * @author Gilles

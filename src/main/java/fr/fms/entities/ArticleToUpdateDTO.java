@@ -17,4 +17,5 @@ public class ArticleToUpdateDTO {
     @DecimalMin("50")
     private double price;
     private Long id;
+    private Long categoryId;
 }
