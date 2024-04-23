@@ -39,7 +39,7 @@ public class CartController {
             Article article = articleOptional.get();
             business.addOneArticleToCart(article);
             model.addAttribute("listOrderItems", business.getCartContent());
-            return "cart";
+            return "redirect:/index";
         } else {
             return "403";
         }

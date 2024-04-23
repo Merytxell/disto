@@ -22,6 +22,9 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
+/** order controller
+ * @author Frederic
+ * */
 @Controller
 public class OrderController {
 
@@ -49,6 +52,10 @@ public class OrderController {
         return "customer";
     }
 
+    /** save customer
+     * @param customer customer data
+     * @param bindingResult validation object
+     * */
     @PostMapping("/saveCustomer")
     private String saveCustomer(@Valid Customer customer, BindingResult bindingResult){
         if(bindingResult.hasErrors()) return "customer";
@@ -59,6 +66,11 @@ public class OrderController {
         return "redirect:/order";
     }
 
+    /**
+     * Order page mapping
+     * @param model
+     * @return order page
+     */
     @GetMapping("/order")
     private String order(Model model){
         model.addAttribute("listOrderItem", business.getCartContent());
@@ -67,8 +79,12 @@ public class OrderController {
         return "order";
     }
 
+    /**
+     * save all element of order and list orderItem into database
+     * @return redirect to index
+     */
     @GetMapping("/saveOrder")
-    public String saveOrder(Model model){
+    public String saveOrder(){
         List<OrderItem> orderItems = business.getCartContent();
         Customer customer = business.getCustomer();
         double totalAmount = business.getTotalAmountOrder();

@@ -21,12 +21,7 @@ import java.util.*;
 public class IBusinessImpl implements IBusiness {
 
   @Autowired
-  ArticleRepository articleRepository;
-  @Autowired
   CustomerRepository customerRepository;
-
-  @Autowired
-  OrderItemRepository orderItemRepository;
 
   @Autowired
   UserController userController;
@@ -48,26 +43,7 @@ public class IBusinessImpl implements IBusiness {
        newOrderItem.setTotalPrice(article.getPrice());
        newOrderItem.setArticle(article);
        cart.put(article.getId(), newOrderItem);
-       //orderItemRepository.save(newOrderitem);
      }
-     /*
-     Optional<OrderItem> item = orderItemRepository.findByArticleId(article.getId());
-        if (item.isPresent()){
-          OrderItem it=item.get();
-          int newQuantity = it.getQuantity() +1;
-          it.setQuantity(newQuantity);
-          it.setTotalPrice(calculateTotalPrice(newQuantity, article));
-          orderItemRepository.save(it);
-        } else {
-          OrderItem newOrderitem = new OrderItem();
-          newOrderitem.setQuantity(1);
-          newOrderitem.setTotalPrice(article.getPrice());
-          newOrderitem.setArticle(article);
-          cart.put(article.getId(), newOrderitem);
-          //orderItemRepository.save(newOrderitem);
-        }
-
-      */
    } else {
     System.out.println("Voila l'erreur");
     }
@@ -75,17 +51,6 @@ public class IBusinessImpl implements IBusiness {
 
   @Override
   public void removeOneArticleFromCart(Long id) {
-    /*
-    OrderItem orderItem = getOrderItem(id);
-    if(orderItem.getQuantity() > 1) {
-      int newQuantity = orderItem.getQuantity() -1;
-      orderItem.setQuantity(newQuantity);
-      orderItem.setTotalPrice(calculateTotalPrice(newQuantity, orderItem.getArticle()));
-      orderItemRepository.save(orderItem);
-    } else {
-      orderItemRepository.deleteById(id);
-    }
-     */
     OrderItem orderItem = cart.get(id);
     if(orderItem.getQuantity() > 1){
       int newQuantity = orderItem.getQuantity() -1;

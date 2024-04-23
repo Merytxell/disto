@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class UserController {
 
+    /**
+     * Method to get the current username of logged user
+     * @param authentication context
+     * @return username
+     */
     @RequestMapping(value = "/username", method = RequestMethod.GET)
     @ResponseBody
     public String currentUserName(Authentication authentication){

@@ -38,6 +38,9 @@ public class User implements Serializable {
     @ManyToMany
     private Collection<Role> roles;
 
+    /**
+     * Entity relationship with customer
+     */
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
     private Collection<Customer> customers;
