@@ -90,7 +90,7 @@ public class ArticleController {
         model.addAttribute("article", new Article());
         List<Category> catList = categoryRepository.findAll();
         model.addAttribute("catList", catList);
-        return "article";
+        return articleString;
     }
 
     /** update article mapping
