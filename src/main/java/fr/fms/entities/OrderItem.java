@@ -9,12 +9,15 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * OrderItem class definition
+ * @author Frederic
+ */
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-
 public class OrderItem implements Serializable {
 
     @Id
@@ -23,12 +26,24 @@ public class OrderItem implements Serializable {
 
     private int quantity ;
 
+    /**
+     * total price of each order items
+     */
     private double totalPrice;
 
+    /**
+     * Entity relationship with article
+     */
     @ManyToOne
     private Article article;
 
-    };
+    /**
+     * Entity relationship with order
+     */
+    @ManyToOne
+    private Order order;
+
+}
 
 
 
