@@ -130,9 +130,9 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
     }
 
     public void generateData() {
-        Role guest = roleRepository.save(new Role( "visiteurs", null));
+        Role guest = roleRepository.save(new Role("visiteurs", null));
         Role user = roleRepository.save(new Role("users", null));
-        Role admin = roleRepository.save(new Role( "admins", null));
+        Role admin = roleRepository.save(new Role("admins", null));
 
 //        List<Role> fredRoles = new ArrayList<>();
 //        fredRoles.add(admin);
@@ -144,13 +144,15 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
 //        User fred = userRepository.save(new User( "fred2024", encodedPassword, true, fredRoles));
 //        User josette = userRepository.save(new User( "josette", encodedPassword, true, josetteRoles));
 
-        createUserWithRoles ("fred2024","fmsAcad@2024$", true, admin,user);
-        createUserWithRoles ("Josette", "@Pelote2024!", true, user);
+        createUserWithRoles("fred2024", "fmsAcad@2024$", true, admin, user);
+        createUserWithRoles("Josette", "@Pelote2024!", true, user);
 
     }
- private void createUserWithRoles (String username, String password, boolean active, Role... roles){
-        List<Role>userRoles = Arrays.asList(roles);
+
+    private void createUserWithRoles(String username, String password, boolean active, Role... roles) {
+        List<Role> userRoles = Arrays.asList(roles);
         String encodedPassword = passwordEncoder.encode(password);
-        userRepository.save(new User (username, encodedPassword, active, userRoles));
- }
+        userRepository.save(new User(username, encodedPassword, active, userRoles));
+    }
 }
+

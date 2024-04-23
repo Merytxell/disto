@@ -9,7 +9,6 @@ import fr.fms.entities.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -79,7 +78,7 @@ public class ArticleController {
     @GetMapping("/article")
     public String article(Model model) {
         // on inject un article par defaut dans le formulaire de saisi
-        model.addAttribute(articleString, new Article());
+        model.addAttribute(articleString, new Article((long) 2, "Samsung", "Samsung 10", 250, 1, null));
         return articleString;
     }
 
@@ -98,7 +97,7 @@ public class ArticleController {
     public String save(@Valid @ModelAttribute("article") ArticleDTO articleDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return articleString;
         // s'il n'y a pas de saisie d'un champ selon certains critères, pas d'insertion en base
-        Article article = new Article(articleDTO.getDescription(), articleDTO.getPrice());
+        Article article = new Article((long) 2, articleDTO.getDescription(), "Samsung S9", articleDTO.getPrice(), 1, null);
         articleRepository.save(article);
         return "redirect:/index";
     }

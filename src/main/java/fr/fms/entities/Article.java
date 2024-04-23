@@ -36,7 +36,7 @@ public class Article implements Serializable {
 
 
 
-    public Article(String description, double price) {
+    public Article(long l, String description, String samsungS9, double price, int i, Object o) {
         this.description = description;
         this.price = price;
     }
