@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,9 +17,15 @@
                 <div class="error-details">
                     Sorry, an error has occured, Requested page not found!
                 </div>
+                <button class="404-button btn btn-success" onclick="returnHome()">Return Home</button>
             </div>
         </div>
     </div>
 </div>
+<script>
+    function returnHome(){
+    window.location.href="/index";
+    }
+</script>
 </body>
 </html>
