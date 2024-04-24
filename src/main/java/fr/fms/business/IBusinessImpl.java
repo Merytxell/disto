@@ -1,8 +1,6 @@
 package fr.fms.business;
 
-import fr.fms.dao.ArticleRepository;
 import fr.fms.dao.CustomerRepository;
-import fr.fms.dao.OrderItemRepository;
 import fr.fms.entities.Article;
 import fr.fms.entities.Customer;
 import fr.fms.entities.OrderItem;
@@ -96,6 +94,11 @@ public class IBusinessImpl implements IBusiness {
   @Override
   public double getTotalAmountOrder(){
     return cart.values().stream().mapToDouble(OrderItem::getTotalPrice).sum();
+  }
+
+  @Override
+  public int getCartSize(){
+    return cart.values().stream().mapToInt(OrderItem::getQuantity).sum();
   }
 
   @Override

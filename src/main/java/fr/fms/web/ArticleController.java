@@ -1,5 +1,6 @@
 package fr.fms.web;
 
+import fr.fms.business.IBusinessImpl;
 import fr.fms.dao.ArticleRepository;
 import fr.fms.dao.CategoryRepository;
 import fr.fms.entities.Article;
@@ -31,6 +32,10 @@ public class ArticleController {
         this.articleRepository = articleRepository;
         this.categoryRepository = categoryRepository;
     }
+
+    @Autowired
+    IBusinessImpl business;
+
     /** "/index" mapping
      * @author Gilles
      * @param model spring model
@@ -41,7 +46,7 @@ public class ArticleController {
                         @RequestParam(name = "keyword", defaultValue = "") String kw,
                         @RequestParam(name = "category", defaultValue = "") String category) {
 
-
+        model.addAttribute("cartSize", business.getCartSize());
         if (!kw.isEmpty()) {
             Page<Article> articles = articleRepository.findByDescriptionContains(kw, PageRequest.of(page, 5));
             model.addAttribute("listArticle", articles.getContent());

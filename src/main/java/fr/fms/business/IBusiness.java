@@ -51,6 +51,8 @@ public interface IBusiness {
      */
     double getTotalAmountOrder();
 
+    int getCartSize();
+
     /**
      * Clear the cart
      * @author Frederic
