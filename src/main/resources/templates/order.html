@@ -12,24 +12,31 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">Récapitulatif de la commande</div>
                 <div class="panel-body">
-                    <div>
-                        <h2>Client :</h2>
-                        <p th:text="${customer.name}"></p>
-                        <p th:text="${customer.lastName}"></p>
-                        <p th:text="${customer.address}"></p>
-                        <p th:text="${customer.email}"></p>
-                        <p th:text="${customer.phone}"></p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h2>Client :</h2>
+                            <p th:text="${customer.name}"></p>
+                            <p th:text="${customer.lastName}"></p>
+                            <p th:text="${customer.address}"></p>
+                            <p th:text="${customer.email}"></p>
+                            <p th:text="${customer.phone}"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h2>Commande :</h2>
+                            <ul class="list-inline">
+                                <li class="col-xs-offset-1">Description</li>
+                                <li class="col-xs-offset-1">Quantité</li>
+                                <li class="col-xs-offset-1">Prix</li>
+                            </ul>
+                            <ul th:each="i:${listOrderItem}" class="list-inline">
+                                <li th:text="${i.article.description}" class="col-xs-offset-1"></li>
+                                <li th:text="${i.quantity}" class="col-xs-offset-1"></li>
+                                <li th:text="${i.totalPrice}" class="col-xs-offset-1"></li>
+                            </ul>
+                            <div></div>
+                        </div>
                     </div>
-                    <div>
-                        <h2>Commande :</h2>
-                        <ul th:each="i:${listOrderItem}" class="list-inline">
-                            <li th:text="${i.article.description}"></li>
-                            <li th:text="${i.quantity}"></li>
-                            <li th:text="${i.totalPrice}"></li>
-                        </ul>
-                        <div></div>
-                    </div>
-                    <div>
+                    <div class="col-md-6 col-md-offset-8">
                         <label>Total :</label>
                         <div th:text="${totalAmount}"></div>
                     </div>
