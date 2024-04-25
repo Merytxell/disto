@@ -13,10 +13,14 @@ import java.util.Collection;
 
 /**
  * Order class definition
+ *
  * @author Frederic
  */
 @Entity
-@Data @NoArgsConstructor @AllArgsConstructor @ToString
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Table(name = "t_order")
 public class Order implements Serializable {
 

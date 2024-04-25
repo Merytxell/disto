@@ -26,11 +26,11 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label"> Categories : </label>
-                        <select name="categoryId" class="form-control" id="category">
+                        <select class="form-control" id="category" name="categoryId">
                             <option th:each="category: ${catList}"
-                                    th:value="${category.id}"
-                                    th:text="${category.name}"
                                     th:selected="${category.id == article.category.id}"
+                                    th:text="${category.name}"
+                                    th:value="${category.id}"
 
                             ></option>
                         </select>

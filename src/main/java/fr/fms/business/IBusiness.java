@@ -8,45 +8,56 @@ import java.util.List;
 
 public interface IBusiness {
 
-    /** Add one article to cart
-     * @author Alejandra
+    /**
+     * Add one article to cart
+     *
      * @param article article to add
-     * */
-    public void addOneArticleToCart(Article article);
-
-    /** Delete one article from cart
      * @author Alejandra
+     */
+    void addOneArticleToCart(Article article);
+
+    /**
+     * Delete one article from cart
+     *
      * @param id article id to delete
-     * */
-    public void removeOneArticleFromCart(Long id);
-
-    /** Calculate items total price
      * @author Alejandra
+     */
+    void removeOneArticleFromCart(Long id);
+
+    /**
+     * Calculate items total price
+     *
      * @param quantity article quantity
-     * @param article article in cart
-     * */
+     * @param article  article in cart
+     * @author Alejandra
+     */
     double calculateTotalPrice(int quantity, Article article);
 
     /**
      * Verify if the article is into the cart
+     *
      * @param articleId article id to verify
      * @return boolean
      */
     boolean isArticleInCart(Long articleId);
 
-    /** Get all item content
+    /**
+     * Get all item content
+     *
      * @author Alejandra
-     * */
+     */
     List<OrderItem> getCartContent();
 
     /**
      * Retrieve the last customer by username of logged user
+     *
      * @author Frederic
      */
     Customer getCustomer();
 
     /**
      * Calculate order total amount
+     *
      * @author Frederic
      */
     double getTotalAmountOrder();
@@ -55,6 +66,7 @@ public interface IBusiness {
 
     /**
      * Clear the cart
+     *
      * @author Frederic
      */
     void clearCart();

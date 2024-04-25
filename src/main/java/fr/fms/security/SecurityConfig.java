@@ -1,40 +1,46 @@
 package fr.fms.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
-/** Security configuration
+/**
+ * Security configuration
+ *
  * @author Claire
- * */
+ */
 @Configuration
 @EnableWebSecurity
 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
     /**
      * data source = data base
-     * */
-    @Autowired
-    DataSource dataSource;
+     */
+    private final DataSource dataSource;
 
-    /** configuration
-     * @author Claire
+    /**
+     * Constructor for SecurityConfig
+     *
+     * @param dataSource the data source
+     */
+    public SecurityConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    /**
+     * configuration
+     *
      * @param auth spring auth service
-     * */
+     * @author Claire
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
@@ -46,18 +52,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder());
 
     }
-    /** password encoder
+
+    /**
+     * password encoder
+     *
      * @author Claire
-     * */
+     */
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /** configuration
-     * @author Claire
+    /**
+     * configuration
+     *
      * @param http spring http service
-     * */
+     * @author Claire
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -65,8 +76,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/index", true)
                 .and()
                 .authorizeRequests()
-                .antMatchers( "/save", "/delete", "/edit", "/article", "/cart", "/customer", "/order", "/saveCustomer", "/saveOrder").hasRole("admins")
-                .antMatchers( "/cart", "/customer", "/order", "/saveCustomer", "/saveOrder").hasRole("users")
+                .antMatchers("/save", "/delete", "/edit", "/article", "/cart", "/customer", "/order", "/saveCustomer", "/saveOrder").hasRole("admins")
+                .antMatchers("/cart", "/customer", "/order", "/saveCustomer", "/saveOrder").hasRole("users")
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/403")

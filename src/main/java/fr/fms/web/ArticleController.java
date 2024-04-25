@@ -18,29 +18,38 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-/** article controller
+
+/**
+ * article controller
+ *
  * @author Gilles
- * */
+ */
 @Controller
 public class ArticleController {
+    private static final String LIST_ARTICLE = "listArticle";
+    private static final String PAGES = "pages";
+    private static final String CURRENT_PAGE = "currentPage";
+    private static final String CAT_LIST = "catList";
+    private static final String KEYWORD = "keyword";
     private final ArticleRepository articleRepository;
     private final CategoryRepository categoryRepository;
+    private final IBusinessImpl business;
     String articleString = "article";
 
     @Autowired
-    public ArticleController(ArticleRepository articleRepository, CategoryRepository categoryRepository) {
+    public ArticleController(ArticleRepository articleRepository, CategoryRepository categoryRepository, IBusinessImpl business) {
         this.articleRepository = articleRepository;
         this.categoryRepository = categoryRepository;
+        this.business = business;
     }
 
-    @Autowired
-    IBusinessImpl business;
-
-    /** "/index" mapping
-     * @author Gilles
-     * @param model spring model
+    /**
+     * "/index" mapping
+     *
+     * @param model         spring model
      * @param @RequestParam (name = page name, defaultValue = default page number, int page = page number)
-     * */
+     * @author Gilles
+     */
     @GetMapping("/index")
     public String index(Model model, @RequestParam(name = "page", defaultValue = "0") int page,
                         @RequestParam(name = "keyword", defaultValue = "") String kw,
@@ -49,25 +58,25 @@ public class ArticleController {
         model.addAttribute("cartSize", business.getCartSize());
         if (!kw.isEmpty()) {
             Page<Article> articles = articleRepository.findByDescriptionContains(kw, PageRequest.of(page, 5));
-            model.addAttribute("listArticle", articles.getContent());
-            model.addAttribute("pages", new int[articles.getTotalPages()]);
-            model.addAttribute("currentPage", page);
-            model.addAttribute("keyword", kw);
+            model.addAttribute(LIST_ARTICLE, articles.getContent());
+            model.addAttribute(PAGES, new int[articles.getTotalPages()]);
+            model.addAttribute(CURRENT_PAGE, page);
+            model.addAttribute(KEYWORD, kw);
 
 
         } else if (!category.isEmpty()) {
             Page<Article> articlesByCategory = articleRepository.findByCategoryName(category, PageRequest.of(page, 5));
-            model.addAttribute("listArticle", articlesByCategory.getContent());
-            model.addAttribute("pages", new int[articlesByCategory.getTotalPages()]);
-            model.addAttribute("currentPage", page);
+            model.addAttribute(LIST_ARTICLE, articlesByCategory.getContent());
+            model.addAttribute(PAGES, new int[articlesByCategory.getTotalPages()]);
+            model.addAttribute(CURRENT_PAGE, page);
             model.addAttribute("category", category);
 
 
         } else {
             Page<Article> allArticles = articleRepository.findAll(PageRequest.of(page, 5));
-            model.addAttribute("listArticle", allArticles.getContent());
-            model.addAttribute("pages", new int[allArticles.getTotalPages()]);
-            model.addAttribute("currentPage", page);
+            model.addAttribute(LIST_ARTICLE, allArticles.getContent());
+            model.addAttribute(PAGES, new int[allArticles.getTotalPages()]);
+            model.addAttribute(CURRENT_PAGE, page);
         }
         List<Category> listCategories = categoryRepository.findAll();
         model.addAttribute("categories", listCategories);
@@ -75,34 +84,41 @@ public class ArticleController {
     }
 
 
-    /** add new article mapping
-     * @author Gilles
+    /**
+     * add new article mapping
+     *
      * @param model spring model
-     * */
+     * @author Gilles
+     */
     @GetMapping("/article")
     public String article(Model model) {
         model.addAttribute("article", new Article());
         List<Category> catList = categoryRepository.findAll();
-        model.addAttribute("catList", catList);
+        model.addAttribute(CAT_LIST, catList);
         return articleString;
     }
-    /** delete mapping
-     * @author Gilles
-     * @param id article id
+
+    /**
+     * delete mapping
+     *
+     * @param id   article id
      * @param page page number
+     * @author Gilles
      * @params keyword searched keyword
-     * */
+     */
     @GetMapping("/delete")
     public String delete(Long id, int page, String keyword) {
         articleRepository.deleteById(id);
         return "redirect:/index?page=" + page + "&keyword=" + keyword;
     }
 
-    /** update article mapping
-     * @author Gilles
+    /**
+     * update article mapping
+     *
      * @param model spring model
-     * @param id article id to update
-     * */
+     * @param id    article id to update
+     * @author Gilles
+     */
 
     @GetMapping("/update")
     public String update(Model model, Long id) {
@@ -110,16 +126,18 @@ public class ArticleController {
         Optional<Article> articleToUpdate = articleRepository.findById(id);
         Article article = articleToUpdate.orElse(null);
         List<Category> catList = categoryRepository.findAll();
-        model.addAttribute("catList", catList);
+        model.addAttribute(CAT_LIST, catList);
         model.addAttribute(articleString, article);
         return "update";
     }
 
-    /** save article
-     * @author Gilles
+    /**
+     * save article
+     *
      * @param updatedArticleDTO article to update
-     * @param bindingResult validation object
-     * */
+     * @param bindingResult     validation object
+     * @author Gilles
+     */
 
     @PostMapping("/toUpdate")
     public String toUpdate(Long id, @Valid @ModelAttribute("updatedArticle") ArticleToUpdateDTO updatedArticleDTO, BindingResult bindingResult) {
@@ -140,16 +158,19 @@ public class ArticleController {
         }
         return "redirect:/index";
     }
-    /** save article
-     * @author Gilles
-     * @param articleDTO article to save
+
+    /**
+     * save article
+     *
+     * @param articleDTO    article to save
      * @param bindingResult validation object
-     * */
+     * @author Gilles
+     */
     @PostMapping("/save")
-    public String save(@Valid @ModelAttribute("article") ArticleDTO articleDTO, BindingResult bindingResult,Model model) {
+    public String save(@Valid @ModelAttribute("article") ArticleDTO articleDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             List<Category> catList = categoryRepository.findAll();
-            model.addAttribute("catList", catList);
+            model.addAttribute(CAT_LIST, catList);
             return articleString;
         }
         Article article = new Article(articleDTO.getDescription(), articleDTO.getPrice());
@@ -160,9 +181,11 @@ public class ArticleController {
     }
 
 
-    /** forbidden page
+    /**
+     * forbidden page
+     *
      * @author Gilles
-     * */
+     */
     @GetMapping("/403")
     public String error() {
         return "403";

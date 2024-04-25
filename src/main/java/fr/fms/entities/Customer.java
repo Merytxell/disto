@@ -12,9 +12,11 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
 
-/** customer class definition
+/**
+ * customer class definition
+ *
  * @author Gilles
- * */
+ */
 @Entity
 @Data
 @NoArgsConstructor
@@ -23,36 +25,36 @@ import java.util.Collection;
 public class Customer implements Serializable {
     /**
      * customer id
-     * */
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      * customer name
-     * */
+     */
     @Pattern(regexp = "^[a-zA-Z]+$", message = "name must contains characters")
     private String name;
 
     /**
      * customer lastName
-     * */
+     */
     @Pattern(regexp = "^[a-zA-Z]+$", message = "lastName must contains characters")
     private String lastName;
     /**
      * customer address
-     * */
+     */
     @Size(min = 10, max = 50)
     private String address;
 
     /**
      * customer email
-     * */
+     */
     @Email
     private String email;
     /**
      * customer phone
-     * */
-    @Pattern(regexp = "^[0-9]{10,14}$", message = "contains only numbers")
+     */
+    @Pattern(regexp = "^\\d{10,14}$", message = "contains only numbers")
     private String phone;
 
     /**

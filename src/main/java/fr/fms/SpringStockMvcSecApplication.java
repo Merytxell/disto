@@ -8,7 +8,6 @@ import fr.fms.dao.RoleRepository;
 import fr.fms.dao.UserRepository;
 import fr.fms.entities.Role;
 import fr.fms.entities.User;
-import fr.fms.security.SecurityConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,20 +26,22 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
 
 
     private final ArticleRepository articleRepository;
-    @Autowired
-    CategoryRepository categoryRepository;
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    RoleRepository roleRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private SecurityConfig securityConfig;
+
+    private final CategoryRepository categoryRepository;
+
+    private final UserRepository userRepository;
+
+    private final RoleRepository roleRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public SpringStockMvcSecApplication(ArticleRepository articleRepository) {
+    public SpringStockMvcSecApplication(ArticleRepository articleRepository, CategoryRepository categoryRepository, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.articleRepository = articleRepository;
+        this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -118,31 +120,25 @@ public class SpringStockMvcSecApplication implements CommandLineRunner {
         articleRepository.save(new Article(null, "SteelSeries Arctis 7", 150, audio, null));
         articleRepository.save(new Article(null, "League of Legends", 100, jeuxVideo, null));
 
-
         articleRepository.findAll().forEach(a -> logger.info(a.toString()));
-        System.out.println("articleRepository" + articleRepository.toString());
-
 
         generateData();
     }
 
     public void generateData() {
-        Role guest = roleRepository.save(new Role("visiteurs", null));
         Role user = roleRepository.save(new Role("users", null));
         Role admin = roleRepository.save(new Role("admins", null));
 
-        createUserWithRoles ("fred2024","fmsAcad@2024$", true, admin,user);
-        createUserWithRoles ("Josette", "@Pelote2024!", true, user);
-
+        createUserWithRoles("fred2024", "fmsAcad@2024$", true, admin, user);
+        createUserWithRoles("Josette", "@Pelote2024!", true, user);
 
     }
 
     private void createUserWithRoles(String username, String password, boolean active, Role... roles) {
         List<Role> userRoles = Arrays.asList(roles);
         String encodedPassword = passwordEncoder.encode(password);
-
-        userRepository.save(new User (username, encodedPassword, active, userRoles, null));
- }
+        userRepository.save(new User(username, encodedPassword, active, userRoles, null));
+    }
 
 }
 

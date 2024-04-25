@@ -11,6 +11,7 @@ import java.io.Serializable;
 
 /**
  * OrderItem class definition
+ *
  * @author Frederic
  */
 @Entity
@@ -24,7 +25,7 @@ public class OrderItem implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int quantity ;
+    private int quantity;
 
     /**
      * total price of each order items
