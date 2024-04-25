@@ -10,6 +10,7 @@ import fr.fms.entities.Order;
 import fr.fms.entities.OrderItem;
 import fr.fms.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -56,8 +59,9 @@ public class OrderController {
      * @param customer customer data
      * @param bindingResult validation object
      * */
-    @PostMapping("/saveCustomer")
+    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, value = "/saveCustomer")
     private String saveCustomer(@Valid Customer customer, BindingResult bindingResult){
+        if(customer == null) return "404";
         if(bindingResult.hasErrors()) return "customer";
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = userController.currentUserName(authentication);
@@ -88,6 +92,7 @@ public class OrderController {
         List<OrderItem> orderItems = business.getCartContent();
         Customer customer = business.getCustomer();
         double totalAmount = business.getTotalAmountOrder();
+        if(customer == null || orderItems.isEmpty()) return "redirect:/404";
         Order order = orderRepository.save(new Order(null, LocalDate.now(), totalAmount, customer, orderItems));
         orderItems.forEach(orderItem -> {
             orderItem.setOrder(order);
