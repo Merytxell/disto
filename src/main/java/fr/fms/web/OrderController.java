@@ -61,7 +61,7 @@ public class OrderController {
      * */
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, value = "/saveCustomer")
     private String saveCustomer(@Valid Customer customer, BindingResult bindingResult){
-        if(customer == null) return "404";
+        if(customer.getName() == null || customer.getLastName() == null || customer.getAddress() == null || customer.getEmail() == null || customer.getPhone() == null) return "404";
         if(bindingResult.hasErrors()) return "customer";
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = userController.currentUserName(authentication);
