@@ -4,20 +4,26 @@ import fr.fms.business.IBusinessImpl;
 import fr.fms.dao.CategoryRepository;
 import fr.fms.entities.Article;
 import fr.fms.entities.Category;
+
 import fr.fms.entities.OrderItem;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringBootTest
 class SpringStockMvcSecApplicationTests {
 
 	@Autowired
 	IBusinessImpl business;
+
 
 	@Test
 	void contextLoads() {
@@ -30,6 +36,7 @@ class SpringStockMvcSecApplicationTests {
 
 		assertEquals(business.getTotalAmountOrder(),600);
 
+
 	}
 	@Test
 	void testAddOneArticleToCart() {
@@ -40,11 +47,21 @@ class SpringStockMvcSecApplicationTests {
 		orderItem.setTotalPrice(600);
 		orderItem.setArticle(articleToAdd);
 		assertTrue(business.getCartContent().contains(orderItem));
+
 	}
 
-//	@Test
-//	void testremoveOneArticleFromCart(){
-//
-//	}
+	@Test
+	void testremoveOneArticleFromCart(){
+
+	Article article = new Article((long)5,"test article", 100, null, null);
+	business.addOneArticleToCart(article);
+	OrderItem orderItem=new OrderItem();
+	orderItem.setQuantity(1);
+	orderItem.setTotalPrice(100);
+	business.removeOneArticleFromCart(article.getId());
+	assertFalse(business.getCartContent().contains(orderItem));
+
+
+	}
 
 }

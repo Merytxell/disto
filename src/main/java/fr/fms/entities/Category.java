@@ -40,5 +40,6 @@ public class Category  implements Serializable {
     @ToString.Exclude
     private Collection<Article> articles;
 
+
 }
 
