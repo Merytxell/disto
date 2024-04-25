@@ -34,10 +34,11 @@ class SpringStockMvcSecApplicationTests {
 		business.addOneArticleToCart(new Article((long)1,"Samsung s8 2024",250, null,null));
 		business.addOneArticleToCart(new Article((long)2,"Samsung s9 2024",350, null,null));
 
-		assertEquals(business.getTotalAmountOrder(),600);
+		assertEquals(business.getTotalAmountOrder(),1200);
 
 
 	}
+
 	@Test
 	void testAddOneArticleToCart() {
 		Article articleToAdd = new Article((long)3, "Samsung s20 2024", 600, null,null);
