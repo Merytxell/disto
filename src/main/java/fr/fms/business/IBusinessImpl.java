@@ -88,7 +88,8 @@ public class IBusinessImpl implements IBusiness {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String currentUserName = userController.currentUserName(authentication);
     List<Customer> customers = customerRepository.findByUserUsernameOrderByIdDesc(currentUserName);
-    return customers.get(0);
+    if(!customers.isEmpty()) return customers.get(0);
+    else return new Customer();
   }
 
   @Override
