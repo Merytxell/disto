@@ -55,17 +55,17 @@ public class OrderController {
     /**
      * save customer
      *
-     * @param customerDTO   customer data
+     * @param customer   customer data
      * @param bindingResult validation object
      */
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, value = "/saveCustomer")
-    String saveCustomer(@Valid CustomerDTO customerDTO, BindingResult bindingResult) {
-        if (customerDTO == null) return "404";
-        if (bindingResult.hasErrors()) return CUSTOMER;
+    String saveCustomer(@Valid Customer customer, BindingResult bindingResult){
+        if(customer.getName() == null || customer.getLastName() == null || customer.getAddress() == null || customer.getEmail() == null || customer.getPhone() == null) return "404";
+        if(bindingResult.hasErrors()) return CUSTOMER;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = userController.currentUserName(authentication);
         User currentUser = userRepository.findByUsername(currentUserName);
-        customerRepository.save(new Customer(null, customerDTO.getName(), customerDTO.getLastName(), customerDTO.getAddress(), customerDTO.getEmail(), customerDTO.getPhone(), null, currentUser));
+        customerRepository.save(new Customer(null, customer.getName(), customer.getLastName(), customer.getAddress(), customer.getEmail(), customer.getPhone(), null, currentUser));
         return "redirect:/order";
     }
 
