@@ -12,11 +12,11 @@
 <div layout:fragment="content">
     <div class="container">
         <div class="panel panel-primary cat-container">
-            <div class="panel-heading">Catégories</div>
+            <div class="panel-heading">City</div>
             <div class="panel-body">
                 <ul class="list-group list-group-horizontal">
                     <li class="list-group-item" th:each="c:${categories}">
-                        <a th:href="@{/index(category=${c.name})}" th:text="${c.name}"></a>
+                        <a th:href="@{/index(city=${c.name})}" th:text="${c.name}"></a>
                     </li>
                 </ul>
             </div>
@@ -24,40 +24,38 @@
     </div>
     <div class="container">
         <div class="panel panel-primary">
-            <div class="panel-heading">Liste des articles</div>
+            <div class="panel-heading">Liste des scéances</div>
 
             <div class="panel-body">
-                <form method="get" th:action="@{/index(category=${category})}">
+                <form method="get" th:action="@{/index(city=${city})}">
                     <label>keyword</label>
                     <input name="keyword" th:value="${keyword}" type="text">
                     <button class="btn btn-primary" type="submit"> Search</button>
                 </form>
                 <table class="table">
                     <tr>
-                        <th>Id</th>
-                        <th>Description</th>
+                        <th>Films</th>
                         <th>Prix</th>
                     </tr>
-                    <tr th:each="a:${listArticle}">
-                        <td th:text="${a.id}"></td>
-                        <td th:text="${a.description}"></td>
-                        <td th:text="${a.price}"></td>
-                        <td><a class="btn btn-success" th:href="@{/addCart(id=${a.id})}">Add/Cart</a></td>
+                    <tr th:each="m:${listMovies}">
+                        <td th:text="${m.name}"></td>
+                        <td th:text="${m.price}"></td>
+                        <td><a class="btn btn-success" th:href="@{/addCart(id=${m.id})}">Add/Cart</a></td>
                         <td sec:authorize="hasRole('ROLE_admins')">
                             <a class="btn btn-danger" onclick="return confirm('Etes vous sur?')"
-                               th:href="@{/delete(id=${a.id}, page=${currentPage}, keyword=${keyword}, category=${category})}">Delete</a>
+                               th:href="@{/delete(id=${m.id}, page=${currentPage}, keyword=${keyword}, city=${category})}">Delete</a>
 
                         </td>
                         <td sec:authorize="hasRole('ROLE_admins')">
                             <a class="btn btn-primary"
-                               th:href="@{/update(id=${a.id})}">Update</a>
+                               th:href="@{/update(id=${m.id})}">Update</a>
 
                         </td>
                     </tr>
                 </table>
                 <ul class="nav nav-pills">
                     <li th:class="${currentPage==status.index}?'active':''" th:each="page, status:${pages}">
-                        <a th:href="@{/index(page=${status.index}, keyword=${keyword}, category=${category})}"
+                        <a th:href="@{/index(page=${status.index}, keyword=${keyword}, city=${city})}"
                            th:text="${status.index}"></a>
                     </li>
                 </ul>

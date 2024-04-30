@@ -1,7 +1,6 @@
 package fr.fms;
 
 import fr.fms.business.IBusinessImpl;
-import fr.fms.entities.Article;
 import fr.fms.entities.OrderItem;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

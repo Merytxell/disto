@@ -36,7 +36,7 @@ public class OrderItem implements Serializable {
      * Entity relationship with article
      */
     @ManyToOne
-    private Article article;
+    private Movie movie;
 
     /**
      * Entity relationship with order
@@ -44,6 +44,8 @@ public class OrderItem implements Serializable {
     @ManyToOne
     private Order order;
 
+    public void setMovie(Movie movie) {
+    }
 }
 
 

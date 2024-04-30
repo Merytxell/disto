@@ -1,11 +1,11 @@
 package fr.fms.business;
 
-import fr.fms.dao.CustomerRepository;
-import fr.fms.entities.Article;
-import fr.fms.entities.Customer;
-import fr.fms.entities.OrderItem;
+import fr.fms.dao.*;
+import fr.fms.entities.*;
 import fr.fms.web.UserController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,43 +26,52 @@ public class IBusinessImpl implements IBusiness {
 
     private static final Logger logger = LoggerFactory.getLogger(IBusinessImpl.class);
     private final CustomerRepository customerRepository;
-    private final UserController userController;
+
     private final Map<Long, OrderItem> cart = new HashMap<>();
+    private final CinemaRepository cinemaRepository;
+    private final UserController userController;
+    private final CityRepository cityRepository;
+    private final MovieRepository movieRepository;
 
     @Autowired
-    public IBusinessImpl(CustomerRepository customerRepository, UserController userController) {
+    public IBusinessImpl(CustomerRepository customerRepository, UserController userController, CinemaRepository cinemaRepository, CityRepository cityRepository, MovieRepository movieRepository) {
         this.customerRepository = customerRepository;
         this.userController = userController;
+        this.cinemaRepository=cinemaRepository;
+        this.cityRepository=cityRepository;
+        this.movieRepository=movieRepository;
     }
 
     @Override
-    public void addOneArticleToCart(Article article) {
-        if (article != null) {
-            if (isArticleInCart(article.getId())) {
-                OrderItem orderItem = cart.get(article.getId());
+    public void addOneMovieToCart(Movie movie) {
+        if (movie!= null) {
+            if (isMovieInCart(movie.getId())) {
+                OrderItem orderItem = cart.get(movie.getId());
                 int newQuantity = orderItem.getQuantity() + 1;
                 orderItem.setQuantity(newQuantity);
-                orderItem.setTotalPrice(calculateTotalPrice(newQuantity, article));
-                cart.put(article.getId(), orderItem);
+                orderItem.setTotalPrice(calculateTotalPrice(newQuantity, movie));
+                cart.put(movie.getId(), orderItem);
             } else {
                 OrderItem newOrderItem = new OrderItem();
                 newOrderItem.setQuantity(1);
-                newOrderItem.setTotalPrice(article.getPrice());
-                newOrderItem.setArticle(article);
-                cart.put(article.getId(), newOrderItem);
+                newOrderItem.setTotalPrice(movie.getPrice());
+                newOrderItem.setMovie(movie);
+                cart.put(movie.getId(), newOrderItem);
             }
         } else {
             logger.error("Voila l'erreur");
         }
     }
 
+
+
     @Override
-    public void removeOneArticleFromCart(Long id) {
+    public void removeOneMovieFromCart(Long id) {
         OrderItem orderItem = cart.get(id);
         if (orderItem.getQuantity() > 1) {
             int newQuantity = orderItem.getQuantity() - 1;
             orderItem.setQuantity(newQuantity);
-            orderItem.setTotalPrice(calculateTotalPrice(newQuantity, orderItem.getArticle()));
+            orderItem.setTotalPrice(calculateTotalPrice(newQuantity, orderItem.getMovie()));
             cart.put(id, orderItem);
         } else {
             cart.remove(id);
@@ -70,15 +79,15 @@ public class IBusinessImpl implements IBusiness {
     }
 
     @Override
-    public double calculateTotalPrice(int quantity, Article article) {
+    public double calculateTotalPrice(int quantity, Movie movie) {
 
-        return quantity * article.getPrice();
+        return quantity * movie.getPrice();
     }
 
     @Override
-    public boolean isArticleInCart(Long articleId) {
+    public boolean isMovieInCart(Long movieId) {
         for (Map.Entry<Long, OrderItem> entry : cart.entrySet()) {
-            if (Objects.equals(articleId, entry.getKey())) {
+            if (Objects.equals(movieId, entry.getKey())) {
                 return true;
             }
         }
@@ -120,6 +129,47 @@ public class IBusinessImpl implements IBusiness {
     public void clearCart() {
         cart.clear();
     }
+
+    public Page<Cinema> getCinemaByCityPage(Long idCity, int page) {
+        return cinemaRepository.findByCityId(idCity, PageRequest.of(page, 5));
+
+    }
+
+    public Page<Cinema> getCinemasPages(String kw, int page) {
+        return cinemaRepository.findByCinemaName(kw , PageRequest.of(page, 5));
+    }
+
+    public List <City> getCity() throws Exception{
+        return cityRepository.findAll();
+    }
+
+    public int getNbCart() {
+        return cart.size();
+    }
+
+    public void deleteMovie(Long id) throws Exception {
+        movieRepository.deleteById(id);
+    }
+
+    public Movie getMovieById(Long id) throws Exception {
+        Optional<Movie> optional = movieRepository.findById(id);
+        return optional.isPresent() ? optional.get() : null;
+
+    }
+
+    public List <Cinema> getCinema() throws Exception {
+        return cinemaRepository.findAll();
+    }
+
+    public void saveMovie(Movie movie) {
+        movieRepository.save(movie);
+    }
+
+    public String great() {
+        return "Hello World";
+    }
 }
+
+
 
 

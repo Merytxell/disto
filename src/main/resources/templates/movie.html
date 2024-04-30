@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+        <html lang="en" layout:decorate="layout"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
+        >
+        <head>
+        <meta charset="UTF-8">
+        <title>Ajouter une séance</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col-md-4 col-xs-8">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Saisir une nouvelle séance</div>
+            <div class="panel-body">
+                <form method="post" th:action="@{/save}">
+                    <div class="form-group">
+                        <label class="control-label"> Film: </label>
+                        <input class="form-control" name="movie" th:value="${movie.movieName}" type="text">
+                        <span class="text-danger" th:errors="${article.description}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label"> Prix : </label>
+                        <input class="form-control" name="price" th:value="${movie.price}" type="text">
+                        <span class="text-danger" th:errors="${movie.price}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label"> Cinema : </label>
+                        <select class="form-control" id="cinema" name="cinemaId">
+                            <option th:each="cinema: ${cinemaList}" th:text="${cinema.cinemaName} "
+                                    th:value="${cinema.id}"></option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html></title>
+</head>
+<body>
+
+</body>
+</html>
