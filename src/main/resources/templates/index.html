@@ -1,10 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" layout:decorate="layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Cinémas de Distopia</title>
+    <link href="../static/bootstrap.min.css" rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-$END$
+<div layout:fragment="content">
+    <div class="container">
+        <div class="panel panel-primary cat-container">
+            <div class="panel-heading">City</div>
+            <div class="panel-body">
+                <ul class="list-group list-group-horizontal">
+                    <li  class="list-group-item" th:each="c : ${cities}">
+                        <a th:href="@{/index(page=0, keyword=${keyword}, cityId=${c.id})}" th:text="${c.cityName}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <form method="get" action="/index">
+        <label>Rechercher un cinéma par mot-clé :</label>
+        <input type="text" name="keyword" th:value="${keyword}" />
+        <button type="submit">Rechercher</button>
+    </form>
+
+    <h2 th:if="${city}" th:text="${'Cinémas à ' + city.cityName}"></h2>
+    <ul th:if="${cinemas}">
+        <li th:each="cinema : ${cinemas}">
+            <span th:text="${cinema.cinemaName}"></span>
+        </li>
+    </ul>
+
+    <h2>Films à l'affiche</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Films</th>
+            <th>Prix</th>
+            <th>Séance</th>
+            <th>Cinemas</th>
+            <th>Villes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="m : ${movies}">
+            <td th:text="${m.movieName}"></td>
+            <td th:text="${m.price}"></td>
+            <td th:text="${m.date}"></td>
+            <td th:text="${m.cinema.cinemaName}"></td>
+            <td th:text="${m.cinema.city.cityName}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

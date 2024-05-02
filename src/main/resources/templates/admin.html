@@ -1,10 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" layout:decorate="layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Cinémas de Distopia</title>
+    <link href="../static/bootstrap.min.css" rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-$END$
+<div layout:fragment="content">
+    <h2>Villes</h2>
+    <div class="container">
+        <div class="panel panel-primary cat-container">
+            <div class="panel-heading">Modification, ajout, suppression des villes</div>
+            <div class="panel-body">
+                <form th:action="@{/editCity}" method="get">
+                    <div class="form-group">
+                <label for="editCityName">Sélectionnez la Ville :</label>
+                <select class="form-control" id="editCityName" name="cityId">
+                    <option th:each="c : ${cityList}" th:value="${c.id}" th:text="${c.cityName}">Nom de la Ville</option>
+                </select>
+                <label for="newCityName">Nouveau Nom de la Ville :</label>
+                <input type="text" class="form-control" id="newCityName" name="newCityName" placeholder="Entrez le nouveau nom de la ville">
+                <button type="submit" class="btn btn-primary">Éditer</button>
+            </div>
+                </form>
+                <form th:action="@{/deleteCity}" method="get">
+                    <div class="form-group">
+                        <label for="deleteCityId">ID de la Ville :</label>
+                        <input type="text" class="form-control" id="deleteCityId" name="id" placeholder="Entrez l'ID de la ville">
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </div>
+                </form>
+                <form th:action="@{/saveCity}" method="post">
+                    <div class="form-group">
+                        <label for="cityName">Nom de la Ville :</label>
+                        <input type="text" class="form-control" id="cityName" name="cityName" placeholder="Entrez le nom de la ville">
+                        <button type="submit" class="btn btn-success">Sauvegarder</button>
+                    </div>
+                </form>
+                <ul class="list-group list-group-horizontal">
+                    <li  class="list-group-item" th:each="c : ${cityList}">
+                        <a th:href="@{/index(page=0, keyword=${keyword}, cityId=${c.id})}" th:text="${c.cityName}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <h2>Cinémas</h2>
+    <div class="container">
+        <div class="panel panel-primary cat-container">
+            <div class="panel-heading">Modification, ajout, suppression des cinémas</div>
+            <div class="panel-body">
+                <form th:action="@{/editCinema}" method="get">
+                    <div class="form-group">
+                        <label for="editCinemaName">Sélectionnez le cinéma :</label>
+                        <select class="form-control" id="editCinemaName" name="cinemaId">
+                            <option th:each="c : ${cinemaList}" th:value="${c.id}" th:text="${c.cinemaName}">Nom du cinéma</option>
+                        </select>
+                        <label for="newCinemaName">Nouveau Nom du cinéma :</label>
+                        <input type="text" class="form-control" id="newCinemaName" name="newCinemaName" placeholder="Entrez le nouveau nom du cinéma">
+                        <button type="submit" class="btn btn-primary">Éditer</button>
+                    </div>
+                </form>
+                <form th:action="@{/deleteCinema}" method="get">
+                    <div class="form-group">
+                        <label for="deleteCinemaId">ID du cinema :</label>
+                        <input type="text" class="form-control" id="deleteCinemaId" name="id" placeholder="Entrez l'ID du cinema">
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </div>
+                </form>
+                <form th:action="@{/saveCinema}" method="post">
+                    <div class="form-group">
+                        <label for="cinemaName">Nom du cinéma:</label>
+                        <input type="text" class="form-control" id="cinemaName" name="cinemaName" placeholder="Entrez le nom du cinéma">
+                        <input type="text" class="form-control" id="address" name="address" placeholder="Entrez l'adresse du cinéma">
+                        <button type="submit" class="btn btn-success">Sauvegarder</button>
+                    </div>
+                </form>
+                <ul class="list-group list-group-horizontal">
+                    <li  class="list-group-item" th:each="c : ${cinemaList}">
+                        <a th:href="@{/index(page=0, keyword=${keyword}, cinemaId=${c.id})}" th:text="${c.cinemaName}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <h2>Séances</h2>
+    <div class="container">
+        <div class="panel panel-primary cat-container">
+            <div class="panel-heading">Modification, ajout, suppression des séances</div>
+            <div class="panel-body">
+                <form th:action="@{/editMovie}" method="get">
+                    <div class="form-group">
+                        <label for="editMovieName">Sélectionnez la séance :</label>
+                        <select class="form-control" id="editMovieName" name="movieId">
+                            <option th:each="c : ${movieList}" th:value="${c.id}" th:text="${c.movieName}">Nom du film</option>
+                        </select>
+                        <label for="newMovieName">Nouveau Nom de la séance :</label>
+                        <input type="text" class="form-control" id="newMovieName" name="newMovieName" placeholder="Entrez le nouveau nom de la séance">
+                        <button type="submit" class="btn btn-primary">Éditer</button>
+                    </div>
+                </form>
+                <form th:action="@{/deleteMovie}" method="get">
+                    <div class="form-group">
+                        <label for="deleteMovieId">ID du film :</label>
+                        <input type="text" class="form-control" id="deleteMovieId" name="id" placeholder="Entrez l'ID du film">
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </div>
+                </form>
+                <form th:action="@{/saveMovie}" method="post">
+                    <div class="form-group">
+                        <label for="movieName">Nom du Film:</label>
+                        <input type="text" class="form-control" id="movieName" name="movieName" placeholder="Entrez le nom du film">
+                        <input type="text" class="form-control" id="date" name="date" placeholder="Entrez l'heure et le jour de la séance">
+                        <button type="submit" class="btn btn-success">Sauvegarder</button>
+                    </div>
+                </form>
+                <ul class="list-group list-group-horizontal">
+                    <li  class="list-group-item" th:each="c : ${movieList}">
+                        <a th:href="@{/index(page=0, keyword=${keyword}, movieId=${c.id})}" th:text="${c.movieName}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    </tbody>
+
+</div>
 </body>
 </html>

@@ -21,26 +21,15 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    /**
-     * data source = data base
-     */
+
     private final DataSource dataSource;
 
-    /**
-     * Constructor for SecurityConfig
-     *
-     * @param dataSource the data source
-     */
+
     public SecurityConfig(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    /**
-     * configuration
-     *
-     * @param auth spring auth service
-     * @author Claire
-     */
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
@@ -53,22 +42,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    /**
-     * password encoder
-     *
-     * @author Claire
-     */
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /**
-     * configuration
-     *
-     * @param http spring http service
-     * @author Claire
-     */
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -76,8 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/index", true)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/save", "/delete", "/edit", "/article").hasRole("admins")
-                .antMatchers("/cart", "/customer", "/order", "/saveCustomer", "/saveOrder").hasRole("users")
+                .antMatchers("/save", "/delete", "/edit", "/admin").hasRole("admins")
+//                .antMatchers("/cart", "/customer", "/order", "/saveCustomer", "/saveOrder").hasRole("users")
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/403")

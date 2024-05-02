@@ -30,6 +30,7 @@ public class Movie implements Serializable {
 
 
 
+
     @ManyToOne
     private Cinema cinema;
 
