@@ -24,12 +24,12 @@
                     <div class="col-md-6">
                         <h2>Commande :</h2>
                         <ul class="list-inline">
-                            <li class="col-xs-offset-1">Description</li>
+                            <li class="col-xs-offset-1">Nom du film</li>
                             <li class="col-xs-offset-1">Quantité</li>
                             <li class="col-xs-offset-1">Prix</li>
                         </ul>
                         <ul class="list-inline" th:each="i:${listOrderItem}">
-                            <li class="col-xs-offset-1" th:text="${i.article.description}"></li>
+                            <li class="col-xs-offset-1" th:text="${i.movie}"></li>
                             <li class="col-xs-offset-1" th:text="${i.quantity}"></li>
                             <li class="col-xs-offset-1" th:text="${i.totalPrice}"></li>
                         </ul>

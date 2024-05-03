@@ -8,8 +8,11 @@ import fr.fms.dao.MovieRepository;
 import fr.fms.entities.Cinema;
 import fr.fms.entities.City;
 import fr.fms.entities.Movie;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +32,11 @@ public class MovieController {
     private static final String CITY_LIST = "cityList" ;
     private static final String CINEMA_LIST = "cinemaList";
     private static final String MOVIE_LIST = "MovieList" ;
+    private static final String PAGES = "pages";
+    private static final String CURRENT_PAGE = "currentPage";
+    private static final String KEYWORD = "keyword";
+
+    private final IBusinessImpl business;
     @Autowired
     IBusinessImpl businessImpl;
     @Autowired
@@ -39,45 +47,81 @@ public class MovieController {
     MovieRepository movieRepository;
 
 
-    private final Logger logger = LoggerFactory.getLogger(MovieController.class);
+  private final Logger logger = LoggerFactory.getLogger(MovieController.class);
+
+    public MovieController(IBusinessImpl business) {
+        this.business = business;
+    }
 
     @GetMapping("/index")
-    public String index(Model model,
-                        @RequestParam(name = "page", defaultValue = "0") int page,
+    public String index(Model model, @RequestParam(name = "page", defaultValue = "0") int page,
                         @RequestParam(name = "keyword", defaultValue = "") String kw,
-                        @RequestParam(name = "cityId", required = false) Long cityId) {
+                        @RequestParam(name = "city", defaultValue = "") String city,
+                        @RequestParam(name = "cinema", defaultValue = "") String cinema) throws Exception {
 
-        try {
-            List<Cinema> cinemas = new ArrayList<>();
-            City city = null;
-
-            if (cityId != null) {
-                city = businessImpl.getCityById(cityId);
-                cinemas = businessImpl.getCinemasByCity(city);
-
-
-                if (!kw.isEmpty()) {
-                    Page<Cinema> cinemasByKeyword = businessImpl.getCinemasByKeyword(kw, page);
-                    cinemas.retainAll(cinemasByKeyword.getContent());
-                }
-            } else {
-
-                cinemas = businessImpl.getCinemasByKeyword(kw, page).getContent();
-            }
-            List<Movie> movies = businessImpl.getMovies();
-            model.addAttribute("listCinema", cinemas);
-            model.addAttribute("movies", movies);
+        model.addAttribute("cartSize", business.getCartSize());
+        if (!kw.isEmpty()) {
+            Page<Cinema> cinemasByKeyword = cinemaRepository.findByCinemaNameContains(kw, PageRequest.of(page, 5));
+            model.addAttribute(CINEMA_LIST, cinemasByKeyword);
+            model.addAttribute(KEYWORD, kw);
+            model.addAttribute(CITY_LIST, cityRepository.findAll());
 
 
-            List<City> cities = businessImpl.getCity();
-            model.addAttribute("cities", cities);
 
-        } catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
-            logger.error("[INDEX CONTROLLER] : {}", e.getMessage());
+        } else if (!city.isEmpty()) {
+            List<City> cinemaByCity = cityRepository.findByCityName(city);
+            model.addAttribute(CINEMA_LIST, cinemaByCity);
+            model.addAttribute(CITY_LIST, cityRepository.findAll());
+
+
         }
+        List<Movie> movies = businessImpl.getMovies();
+        model.addAttribute("movies", movies);
+        List<City> cities = businessImpl.getCity();
+        model.addAttribute("cities", cities);
+        List<Cinema> cinemas= businessImpl.getCinema();
+        model.addAttribute("cinemas", cinemas);
         return "index";
     }
+
+//
+//    @GetMapping("/index")
+//    public String index(Model model,
+//                        @RequestParam(name = "page", defaultValue = "0") int page,
+//                        @RequestParam(name = "keyword", defaultValue = "") String kw,
+//                        @RequestParam(name = "cityId", required = false) Long cityId) {
+//
+//        try {
+//            List<Cinema> cinemas = new ArrayList<>();
+//            City city = null;
+//
+//            if (cityId != null) {
+//                city = businessImpl.getCityById(cityId);
+//                cinemas = businessImpl.getCinemasByCity(city);
+//
+//
+//                if (!kw.isEmpty()) {
+//                    Page<Cinema> cinemasByKeyword = businessImpl.getCinemasByKeyword(kw, page);
+//                    cinemas.retainAll(cinemasByKeyword.getContent());
+//                }
+//            } else {
+//
+//                cinemas = businessImpl.getCinemasByKeyword(kw, page).getContent();
+//            }
+//            List<Movie> movies = businessImpl.getMovies();
+//            model.addAttribute("listCinema", cinemas);
+//            model.addAttribute("movies", movies);
+//
+//
+//            List<City> cities = businessImpl.getCity();
+//            model.addAttribute("cities", cities);
+//
+//        } catch (Exception e) {
+//            model.addAttribute("error", e.getMessage());
+//            logger.error("[INDEX CONTROLLER] : {}", e.getMessage());
+//        }
+//        return "index";
+//    }
 
     @GetMapping("/admin")
     public String admin(Model model) {

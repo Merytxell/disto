@@ -24,33 +24,23 @@ import java.util.Collection;
 @Table(name = "t_order")
 public class Order implements Serializable {
 
-    /**
-     * id auto increment
-     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * Formatted date
-     */
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
-    /**
-     * Order total amount
-     */
+
     private double totalAmount;
 
-    /**
-     * Entity relationship with customer
-     */
+
     @ManyToOne
     private Customer customer;
 
-    /**
-     * Entity relationship with orderItem
-     */
+
     @OneToMany(mappedBy = "order")
     @ToString.Exclude
     private Collection<OrderItem> orderItems;

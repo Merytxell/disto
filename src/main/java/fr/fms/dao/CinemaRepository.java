@@ -14,7 +14,7 @@ public interface CinemaRepository extends JpaRepository<Cinema,Long> {
     Page<Cinema> findByCityId(Long idCity, Pageable pageable);
 
 
-    Page<Cinema> findByCinemaNameContainingIgnoreCase(String kw, Pageable pageable);
+    Page<Cinema> findByCinemaNameContains(String kw, Pageable pageable);
 
     Page<Cinema> findByCityCityNameIgnoreCase(String city, Pageable pageable);
 

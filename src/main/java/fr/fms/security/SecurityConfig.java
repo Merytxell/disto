@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/save", "/delete", "/edit", "/admin").hasRole("admins")
-//                .antMatchers("/cart", "/customer", "/order", "/saveCustomer", "/saveOrder").hasRole("users")
+                .antMatchers("/cart", "/customer", "/order", "/saveCustomer", "/saveOrder").hasRole("users")
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/403")

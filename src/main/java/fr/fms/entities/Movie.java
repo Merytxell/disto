@@ -45,11 +45,4 @@ public class Movie implements Serializable {
 
 
 
-
-//    @OneToMany(mappedBy = "article")
-//    @ToString.Exclude
-//    private Collection<OrderItem> orderItems;
-
-
-
 }

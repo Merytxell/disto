@@ -165,8 +165,8 @@ public class IBusinessImpl implements IBusiness {
         return "Hello World";
     }
 
-    public Page<Cinema> getCinemasByKeyword(String kw, int page) {
-        return cinemaRepository.findByCinemaNameContainingIgnoreCase(kw, PageRequest.of(page, PAGE_SIZE));
+    public Page<Cinema> getfindByCinemaNameContains(String kw, Pageable pageable) {
+        return cinemaRepository.findByCinemaNameContains(kw, pageable);
     }
 
     public Page<Cinema> getCinemasByCity(String city, int page) {
@@ -197,9 +197,9 @@ public class IBusinessImpl implements IBusiness {
         cityRepository.deleteById(id);
     }
 
-    public Page<Cinema> getCinemasByCinemaName(String cinemaName, int page) {
-        return cinemaRepository.findByCinemaNameContainingIgnoreCase(cinemaName, PageRequest.of(page, PAGE_SIZE));
-        }
+//    public Page<Cinema> getCinemasByCinemaName(String cinemaName, int page) {
+//        return cinemaRepository.findByCinemaNameContainingIgnoreCase(cinemaName, PageRequest.of(page, PAGE_SIZE));
+//        }
 
     public City getCityById(Long cityId) {
         Optional<City> optional = cityRepository.findById(cityId);

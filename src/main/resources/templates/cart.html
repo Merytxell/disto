@@ -20,19 +20,17 @@
                 <div th:unless="${#lists.isEmpty(listOrderItems)}">
                     <table class="table">
                         <tr>
-                            <th>Id</th>
-                            <th>Article</th>
+                            <th>Séance</th>
                             <th>Prix</th>
                             <th>Quantité</th>
                         </tr>
                         <tr th:each="i:${listOrderItems}">
-                            <td th:text="${i.article.id}"></td>
-                            <td th:text="${i.article.description}"></td>
+                            <td th:text="${i.movie}"></td>
                             <td th:text="${i.totalPrice}"></td>
                             <td th:text="${i.quantity}"></td>
                             <td>
                                 <a class="btn btn-danger"
-                                   th:href="@{/deleteOrderItem(id=${i.article.id})}">Supprimer</a>
+                                   th:href="@{/deleteOrderItem(id=${i.movie})}">Supprimer</a>
                             </td>
                         </tr>
                     </table>

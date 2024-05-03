@@ -29,22 +29,22 @@
             <div class="panel-body">
                 <ul class="list-group list-group-horizontal">
                     <li  class="list-group-item" th:each="c : ${cities}">
-                        <a th:href="@{/index(page=0, keyword=${keyword}, cityId=${c.id})}" th:text="${c.cityName}"></a>
+                        <a th:href="@{/index(page=0, keyword=${keyword}, city=${c.id})}" th:text="${c.cityName}"></a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
 
-    <form method="get" action="/index">
+    <form method="get" th:action="@{/index(cinema=${cinema})}">
         <label>Rechercher un cinéma par mot-clé :</label>
-        <input type="text" name="keyword" th:value="${keyword}" />
+        <input name="keyword" th:value="${keyword}" type="text">
         <button type="submit">Rechercher</button>
     </form>
 
-    <h2 th:if="${city}" th:text="${'Cinémas à ' + city.cityName}"></h2>
-    <ul th:if="${cinemas}">
-        <li th:each="cinema : ${cinemas}">
+    <h2 th:if="${cityList}" th:text="${'Cinémas à ' + city}"></h2>
+    <ul th:if="${cinemaByKeyword}">
+        <li th:each="cinemas : ${cinemas}">
             <span th:text="${cinema.cinemaName}"></span>
         </li>
     </ul>
@@ -67,6 +67,7 @@
             <td th:text="${m.date}"></td>
             <td th:text="${m.cinema.cinemaName}"></td>
             <td th:text="${m.cinema.city.cityName}"></td>
+            <td><a class="btn btn-success" th:href="@{/addCart(id=${m.id})}">Add/Cart</a></td>
         </tr>
         </tbody>
     </table>
